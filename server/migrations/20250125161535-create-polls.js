@@ -1,0 +1,1 @@
+﻿// Migration for Polls table
