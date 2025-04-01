@@ -16,7 +16,7 @@
 ## Project Structure
 Below is the initial file structure for the project:
 
-\\\mermaid
+```mermaid
 graph TD;
     Bound["Bound Project Root"]
     Bound --> client["client/ (Frontend React)"]
