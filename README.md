@@ -35,7 +35,7 @@ graph TD;
     src_server --> routes["routes/ (API Routes)"]
 
     dev-setup --> setup_ps1["setup.ps1 (Setup Script)"]
-\\\
+```
 
 ---
 
