@@ -1,3 +1,3 @@
 # Bound
 
-A community-driven, privacy-first social platform for the kink/BDSM space.
+A community-driven, privacy-first platform for the BDSM/kink community.
