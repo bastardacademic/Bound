@@ -1,14 +1,21 @@
-import { Controller, Post, Get, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, Req, UseGuards } from '@nestjs/common';
+import { JournalService } from './journal.service';
+import { AuthGuard } from '../auth/auth.guard';
 
 @Controller('journal')
+@UseGuards(AuthGuard)
 export class JournalController {
-  @Post()
-  createEntry(@Body() dto: any) {
-    return { message: 'Journal entry created', entry: dto };
-  }
+  constructor(private readonly journalService: JournalService) {}
 
   @Get()
-  getEntries() {
-    return { message: 'Fetched journal entries', entries: [] };
+  async getEntries(@Req() req) {
+    const userId = req.user.userId;
+    return this.journalService.getEntries(userId);
+  }
+
+  @Post()
+  async createEntry(@Req() req, @Body() body: { title?: string, content: string }) {
+    const userId = req.user.userId;
+    return this.journalService.createEntry(userId, body);
   }
 }
