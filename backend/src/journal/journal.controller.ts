@@ -9,13 +9,11 @@ export class JournalController {
 
   @Get()
   async getEntries(@Req() req) {
-    const userId = req.user.userId;
-    return this.journalService.getEntries(userId);
+    return this.journalService.getEntries(req.user.userId);
   }
 
   @Post()
   async createEntry(@Req() req, @Body() body: { title?: string, content: string }) {
-    const userId = req.user.userId;
-    return this.journalService.createEntry(userId, body);
+    return this.journalService.createEntry(req.user.userId, body);
   }
 }
