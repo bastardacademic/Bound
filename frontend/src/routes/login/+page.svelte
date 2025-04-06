@@ -1,25 +1,32 @@
 <script>
+  import { session } from '/session';
+  import { goto } from '/navigation';
   let email = '';
   let password = '';
   let error = '';
+
   async function login() {
-    try {
-      const res = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-      });
+    error = '';
+    const res = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+
+    if (res.ok) {
       const data = await res.json();
-      if (!res.ok) throw new Error(data.message || 'Login failed');
-    } catch (err) {
-      error = err.message;
+      session.set({ token: data.token, user: data.user });
+      goto('/dashboard');
+    } else {
+      error = 'Invalid email or password';
     }
   }
 </script>
+
 <h2>Login</h2>
 <form on:submit|preventDefault={login}>
-  <input type="email" placeholder="Email" bind:value={email} required />
-  <input type="password" placeholder="Password" bind:value={password} required />
-  <button type="submit">Login</button>
+  <input type='email' placeholder='Email' bind:value={email} required />
+  <input type='password' placeholder='Password' bind:value={password} required />
+  <button type='submit'>Login</button>
 </form>
-<p>{error}</p>
+{#if error}<p style='color: red;'>{error}</p>{/if}
