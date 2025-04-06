@@ -1,5 +1,5 @@
 <script>
-  import { goto } from '/navigation';
+  import { goto } from '$app/navigation';
   let email = '';
   let password = '';
   let confirm = '';

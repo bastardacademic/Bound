@@ -1,6 +1,6 @@
 <script>
-  import { session } from '/session';
-  import { goto } from '/navigation';
+  import { session } from '$stores/session';
+  import { goto } from '$app/navigation';
   let email = '';
   let password = '';
   let error = '';
