@@ -1,74 +1,85 @@
-<script lang='ts'>
-  import { session } from '/session';
+<script lang="ts">
   import { onMount } from 'svelte';
-  import { goto } from '/navigation';
+  import { session } from '$stores/session';
+  import { goto } from '$app/navigation';
   import { get } from 'svelte/store';
   import { marked } from 'marked';
 
-  let entries = [];
-  let content = '';
   let title = '';
+  let content = '';
+  let tags = '';
+  let collectionId = '';
+  let privacy = 'private';
+  let type = 'journal';
+  let collections = [];
   let message = '';
 
-  onMount(() => {
+  onMount(async () => {
     const { token } = get(session);
-    if (!token) {
-      goto('/login');
-    } else {
-      fetchEntries();
-    }
-  });
-
-  async function fetchEntries() {
-    const res = await fetch('/api/journal');
+    if (!token) goto('/login');
+    const res = await fetch('/api/journal/collections');
     const data = await res.json();
-    entries = data.entries || [];
-  }
+    collections = data.collections || [];
+  });
 
   async function submitEntry() {
     const res = await fetch('/api/journal', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title, content })
+      body: JSON.stringify({
+        title, content, tags: tags.split(',').map(t => t.trim()), collectionId, privacy, type
+      })
     });
+
     const data = await res.json();
     message = data.message;
-    content = '';
     title = '';
-    fetchEntries();
+    content = '';
+    tags = '';
+    collectionId = '';
+    privacy = 'private';
+    type = 'journal';
   }
 </script>
 
-<h2>My Journal</h2>
+<h2>New Journal Entry</h2>
 <form on:submit|preventDefault={submitEntry}>
-  <input type='text' placeholder='Title (optional)' bind:value={title} />
-  <textarea placeholder='Write something...' bind:value={content}></textarea>
-  <button type='submit'>Save</button>
+  <input type="text" placeholder="Title" bind:value={title} />
+  <textarea placeholder="Write your thoughts..." rows="10" bind:value={content}></textarea>
+
+  <label>Tags (comma separated)</label>
+  <input type="text" placeholder="e.g. growth, trust, play" bind:value={tags} />
+
+  <label>Privacy</label>
+  <select bind:value={privacy}>
+    <option value="private">Private</option>
+    <option value="shared">Shared</option>
+    <option value="erotica">Erotica</option>
+    <option value="public">Public</option>
+  </select>
+
+  <label>Type</label>
+  <select bind:value={type}>
+    <option value="journal">Journal</option>
+    <option value="note">Note</option>
+    <option value="erotica">Erotica</option>
+    <option value="educational">Educational</option>
+  </select>
+
+  <label>Collection</label>
+  <select bind:value={collectionId}>
+    <option value="">None</option>
+    {#each collections as c}
+      <option value={c.id}>{c.title}</option>
+    {/each}
+  </select>
+
+  <button type="submit">Save Entry</button>
 </form>
-<p>{message}</p>
+
+{#if message}<p style="color: green;">{message}</p>{/if}
 
 <h3>Live Preview</h3>
-<div class='preview'>
+<div class="preview">
   {@html marked(content)}
 </div>
-
-<hr />
-
-<ul>
-  {#each entries as entry}
-    <li>
-      <strong>{entry.title}</strong><br />
-      <em>{entry.content}</em>
-    </li>
-  {/each}
-</ul>
-
-<style>
-  .preview {
-    background: #f9f9f9;
-    border: 1px solid #ccc;
-    padding: 1rem;
-    margin-top: 1rem;
-    white-space: pre-wrap;
-  }
-</style>
