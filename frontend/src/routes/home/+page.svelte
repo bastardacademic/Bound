@@ -3,6 +3,7 @@
   import { session } from '$stores/session';
   import { goto } from '$app/navigation';
   import { get } from 'svelte/store';
+  import Reactions from '$lib/components/Reactions.svelte';
 
   let posts = [];
   let typeFilter = 'all';
@@ -40,6 +41,8 @@
     <li>
       <strong>{post.author}</strong> — {post.type}<br />
       {post.content?.slice(0, 200)}...
+
+      <Reactions postId={post.id} reactions={post.reactions} userReaction={post.userReaction} />
     </li>
   {/each}
 </ul>
