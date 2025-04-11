@@ -1,23 +1,24 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
-  import { session } from '$stores/session';
-  import { goto } from '$app/navigation';
-  import { get } from 'svelte/store';
-  import Reactions from '$lib/components/Reactions.svelte';
+  import { onMount } from "svelte";
+  import { session } from "$stores/session";
+  import { goto } from "$app/navigation";
+  import { get } from "svelte/store";
+  import Reactions from "$lib/components/Reactions.svelte";
+  import ReportButton from "$lib/components/ReportButton.svelte";
 
   let posts = [];
-  let typeFilter = 'all';
+  let typeFilter = "all";
 
   onMount(async () => {
     const { token } = get(session);
-    if (!token) goto('/login');
+    if (!token) goto("/login");
     await fetchFeed();
   });
 
   async function fetchFeed() {
     const query = new URLSearchParams();
-    if (typeFilter !== 'all') query.append('type', typeFilter);
-    const res = await fetch('/api/feed/home?' + query.toString());
+    if (typeFilter !== "all") query.append("type", typeFilter);
+    const res = await fetch("/api/feed/home?" + query.toString());
     posts = await res.json();
   }
 </script>
@@ -42,7 +43,8 @@
       <strong>{post.author}</strong> — {post.type}<br />
       {post.content?.slice(0, 200)}...
 
-      <Reactions postId={post.id} reactions={post.reactions} userReaction={post.userReaction} />
+      <Reactions postId={post.id} reactions={post.reactions} userReaction={post.userReaction} tags={post.tags} />
+      <ReportButton targetId={post.id} type="post" />
     </li>
   {/each}
 </ul>
