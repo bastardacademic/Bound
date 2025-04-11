@@ -54,21 +54,3 @@
 {#if submitted}
   <p style="color: green;">Report submitted.</p>
 {/if}
-
-<style>
-  .report-form {
-    margin-top: 0.5rem;
-    background: #f9f9f9;
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-  }
-  select, textarea {
-    width: 100%;
-    margin-top: 0.25rem;
-    margin-bottom: 0.5rem;
-  }
-  textarea {
-    min-height: 60px;
-  }
-</style>
