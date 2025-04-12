@@ -1,16 +1,19 @@
-<script>
-  import { onMount } from 'svelte';
-  import { theme } from '/theme';
-
-  onMount(() => {
-    const stored = localStorage.getItem('theme');
-    if (stored) {
-      theme.set(stored);
-    } else {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      theme.set(prefersDark ? 'dark' : 'light');
-    }
-  });
+<script lang="ts">
+  import ThemeToggle from "$lib/components/ThemeToggle.svelte";
 </script>
 
+<header>
+  <h1>Bound</h1>
+  <ThemeToggle />
+</header>
+
 <slot />
+
+<style>
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+  }
+</style>
