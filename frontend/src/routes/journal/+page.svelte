@@ -1,85 +1,80 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
-  import { session } from '$stores/session';
-  import { goto } from '$app/navigation';
-  import { get } from 'svelte/store';
-  import { marked } from 'marked';
+  import { session } from "$stores/session";
+  import { onMount } from "svelte";
+  import { goto } from "$app/navigation";
+  import { get } from "svelte/store";
+  import { marked } from "marked";
+  import VoiceRecorder, { getAudioBlob } from "$lib/components/VoiceRecorder.svelte";
 
-  let title = '';
-  let content = '';
-  let tags = '';
-  let collectionId = '';
-  let privacy = 'private';
-  let type = 'journal';
-  let collections = [];
-  let message = '';
+  let entries = [];
+  let content = "";
+  let title = "";
+  let message = "";
 
-  onMount(async () => {
+  onMount(() => {
     const { token } = get(session);
-    if (!token) goto('/login');
-    const res = await fetch('/api/journal/collections');
-    const data = await res.json();
-    collections = data.collections || [];
+    if (!token) {
+      goto("/login");
+    } else {
+      fetchEntries();
+    }
   });
 
+  async function fetchEntries() {
+    const res = await fetch("/api/journal");
+    const data = await res.json();
+    entries = data.entries || [];
+  }
+
   async function submitEntry() {
-    const res = await fetch('/api/journal', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        title, content, tags: tags.split(',').map(t => t.trim()), collectionId, privacy, type
-      })
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("content", content);
+
+    const audio = getAudioBlob();
+    if (audio) {
+      formData.append("audio", audio, "entry.webm");
+    }
+
+    const res = await fetch("/api/journal", {
+      method: "POST",
+      body: formData
     });
 
     const data = await res.json();
     message = data.message;
-    title = '';
-    content = '';
-    tags = '';
-    collectionId = '';
-    privacy = 'private';
-    type = 'journal';
+    content = "";
+    title = "";
+    fetchEntries();
   }
 </script>
 
-<h2>New Journal Entry</h2>
+<h2>My Journal</h2>
 <form on:submit|preventDefault={submitEntry}>
-  <input type="text" placeholder="Title" bind:value={title} />
-  <textarea placeholder="Write your thoughts..." rows="10" bind:value={content}></textarea>
+  <input type="text" placeholder="Title (optional)" bind:value={title} />
+  <textarea placeholder="Write something..." bind:value={content}></textarea>
 
-  <label>Tags (comma separated)</label>
-  <input type="text" placeholder="e.g. growth, trust, play" bind:value={tags} />
+  <VoiceRecorder />
 
-  <label>Privacy</label>
-  <select bind:value={privacy}>
-    <option value="private">Private</option>
-    <option value="shared">Shared</option>
-    <option value="erotica">Erotica</option>
-    <option value="public">Public</option>
-  </select>
-
-  <label>Type</label>
-  <select bind:value={type}>
-    <option value="journal">Journal</option>
-    <option value="note">Note</option>
-    <option value="erotica">Erotica</option>
-    <option value="educational">Educational</option>
-  </select>
-
-  <label>Collection</label>
-  <select bind:value={collectionId}>
-    <option value="">None</option>
-    {#each collections as c}
-      <option value={c.id}>{c.title}</option>
-    {/each}
-  </select>
-
-  <button type="submit">Save Entry</button>
+  <button type="submit">Save</button>
 </form>
-
-{#if message}<p style="color: green;">{message}</p>{/if}
+<p>{message}</p>
 
 <h3>Live Preview</h3>
 <div class="preview">
   {@html marked(content)}
 </div>
+
+<hr />
+
+<ul>
+  {#each entries as entry}
+    <li>
+      <strong>{entry.title}</strong><br />
+      <em>{entry.content}</em>
+      {#if entry.audioUrl}
+        <br /><audio controls src={entry.audioUrl}></audio>
+      {/if}
+    </li>
+  {/each}
+</ul>
