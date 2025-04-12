@@ -1,29 +1,71 @@
-<script>
-  import { session } from '$stores/session';
-  import { onMount } from 'svelte';
-  import { goto } from '$app/navigation';
-  import { get } from 'svelte/store';
+<script lang="ts">
+  import { onMount } from "svelte";
 
-  let stats = {};
-  let loading = true;
+  let stats = {
+    journals: [],
+    media: 0,
+    polls: 0,
+    streak: 0,
+    tags: []
+  };
 
   onMount(async () => {
-    const { token } = get(session);
-    if (!token) goto('/login');
-    const res = await fetch('/api/dashboard');
-    stats = await res.json();
-    loading = false;
+    const res = await fetch("/api/dashboard");
+    if (res.ok) {
+      stats = await res.json();
+    }
   });
 </script>
 
-<h2>Welcome to Your Dashboard</h2>
-{#if loading}
-  <p>Loading...</p>
-{:else}
-  <ul>
-    <li><strong>Unread Messages:</strong> {stats.unreadMessages}</li>
-    <li><strong>Journal Entries:</strong> {stats.journalCount}</li>
-    <li><strong>Achievements:</strong> {stats.achievements}</li>
-    <li><strong>Connections:</strong> {stats.connections}</li>
-  </ul>
+<h2>?? Your Dashboard</h2>
+
+{#if stats.journals.length > 0}
+  <section>
+    <h3>Journals This Week</h3>
+    <ul class="bar-graph">
+      {#each stats.journals as count, i}
+        <li style="height: {count * 10}px" title="Day {i + 1}: {count} entries"></li>
+      {/each}
+    </ul>
+  </section>
 {/if}
+
+<section>
+  <h3>Content Summary</h3>
+  <p>Media Uploaded: {stats.media}</p>
+  <p>Polls Created: {stats.polls}</p>
+</section>
+
+<section>
+  <h3>Weekly Activity Streak</h3>
+  <p>?? {stats.streak} days in a row</p>
+</section>
+
+{#if stats.tags.length > 0}
+  <section>
+    <h3>Top Tags</h3>
+    <ul>
+      {#each stats.tags as tag}
+        <li>#{tag}</li>
+      {/each}
+    </ul>
+  </section>
+{/if}
+
+<style>
+  section {
+    margin-bottom: 2rem;
+  }
+  .bar-graph {
+    display: flex;
+    gap: 0.5rem;
+    height: 100px;
+    align-items: flex-end;
+  }
+  .bar-graph li {
+    width: 20px;
+    background: var(--accent, #c84aff);
+    border-radius: 3px;
+    cursor: help;
+  }
+</style>
