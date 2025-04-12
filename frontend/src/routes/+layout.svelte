@@ -1,5 +1,6 @@
 <script lang="ts">
   import ThemeToggle from "$lib/components/ThemeToggle.svelte";
+  import { accessibility } from "$stores/accessibility";
 </script>
 
 <header>
