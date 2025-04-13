@@ -69,12 +69,19 @@
 
 <ul>
   {#each entries as entry}
-    <li>
+    <li class:blurred={isCW(entry) && !shown[entry.id]}>
+  {#if isCW(entry) && !shown[entry.id]}<button on:click={() => toggleCW(entry.id)} class='reveal'>⚠️ Content Warning – Click to Reveal</button>{/if}
       <strong>{entry.title}</strong><br />
       <em>{entry.content}</em>
       {#if entry.audioUrl}
         <br /><audio controls src={entry.audioUrl}></audio>
       {/if}
-    </li>
+    {#if isCW(entry) && shown[entry.id]}<p class='note'>(CW revealed)</p>{/if}</li>
   {/each}
 </ul>
+
+<style>
+  .blurred { filter: blur(4px); position: relative; }
+  .reveal { position: absolute; top: 0; left: 0; font-size: 0.9rem; padding: 0.25rem 0.5rem; background: #222; color: yellow; z-index: 5; border: 1px solid #888; border-radius: 4px; }
+  .note { font-size: 0.75rem; color: #aaa; }
+</style>

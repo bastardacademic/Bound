@@ -12,7 +12,7 @@
 </script>
 
 <div class="comments">
-  <h4>?? Comments</h4>
+  <h4>💬 Comments</h4>
 
   {#if comments.length === 0}
     <p class="empty">No comments yet. Be the first!</p>
