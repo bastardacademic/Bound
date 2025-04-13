@@ -1,23 +1,23 @@
 <script lang="ts">
   let unlocked = [
-    { name: "?? 10 Journals This Week", progress: 100, unlocked: true },
-    { name: "?? 25 Group Posts", progress: 100, unlocked: true }
+    { name: "🔥 10 Journals This Week", progress: 100, unlocked: true },
+    { name: "💬 25 Group Posts", progress: 100, unlocked: true }
   ];
 
   let inProgress = [
-    { name: "?? 80% Poll Participation", progress: 45, unlocked: false },
-    { name: "?? 10 Media Shares", progress: 60, unlocked: false }
+    { name: "📊 80% Poll Participation", progress: 45, unlocked: false },
+    { name: "📸 10 Media Shares", progress: 60, unlocked: false }
   ];
 </script>
 
-<h2>?? Group Achievements</h2>
+<h2>🏆 Group Achievements</h2>
 
 <section>
   <h3>Unlocked</h3>
   <ul>
     {#each unlocked as a}
       <li class="unlocked">
-        {a.name} <span class="status">?</span>
+        {a.name} <span class="status">✅</span>
       </li>
     {/each}
   </ul>
