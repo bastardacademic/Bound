@@ -18,6 +18,21 @@
       tags: ["cw:sensory"]
     }
   ];
+
+  const getAuthorPreview = () => {
+    const el = document.createElement("div");
+    new ProfilePreviewCard({
+      target: el,
+      props: {
+        username: "scenecurator",
+        displayName: "SceneCurator",
+        pronouns: "they/them",
+        flair: "Observer",
+        mutualGroups: ["KinkPhoto Meetup"]
+      }
+    });
+    return el;
+  };
 </script>
 
 <h2>Media Gallery</h2>
@@ -29,27 +44,18 @@
         <button on:click={() => toggleCW(post.id)} class="reveal">?? Content Warning – Click to Reveal</button>
       {/if}
 
-      <span use:useHoverPreview={() => {
-        const el = document.createElement('div');
-        new ProfilePreviewCard({
-          target: el,
-          props: {
-            username: 'kinkphotog',
-            displayName: 'KinkPhotog',
-            pronouns: 'he/him',
-            flair: 'Photographer',
-            mutualGroups: ['Visual Vibe']
-          }
-        });
-        return el;
-      }}>
-        <strong>{post.title}</strong>
-      </span><br />
+      <strong>{post.title}</strong><br />
 
-      <CommentThread
-        comments={[{ author: "SceneCurator", text: "This is beautiful work.", timestamp: "1h ago" }]}
-        onComment={(t) => console.log("Media comment:", t)}
-      />
+      <div class="comment-thread">
+        <h4>?? Comments</h4>
+        <ul>
+          <li>
+            <span use:useHoverPreview={getAuthorPreview}><strong>SceneCurator</strong></span> <span class="ts">1h ago</span><br />
+            <span>This is beautiful work.</span>
+          </li>
+        </ul>
+      </div>
+
       {#if isCW(post) && shown[post.id]}
         <p class="note">(CW revealed)</p>
       {/if}
@@ -66,4 +72,5 @@
     z-index: 5; border: 1px solid #888; border-radius: 4px;
   }
   .note { font-size: 0.75rem; color: #aaa; }
+  .ts { color: #888; font-size: 0.75rem; margin-left: 0.25rem; }
 </style>

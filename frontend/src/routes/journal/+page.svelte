@@ -19,6 +19,21 @@
       tags: ["cw:bloodplay"]
     }
   ];
+
+  const getAuthorPreview = () => {
+    const el = document.createElement("div");
+    new ProfilePreviewCard({
+      target: el,
+      props: {
+        username: "velvettop",
+        displayName: "VelvetTop",
+        pronouns: "she/her",
+        flair: "Top",
+        mutualGroups: ["BDSM Book Club"]
+      }
+    });
+    return el;
+  };
 </script>
 
 <h2>My Journal</h2>
@@ -30,28 +45,19 @@
         <button on:click={() => toggleCW(entry.id)} class="reveal">?? Content Warning – Click to Reveal</button>
       {/if}
 
-      <span use:useHoverPreview={() => {
-        const el = document.createElement('div');
-        new ProfilePreviewCard({
-          target: el,
-          props: {
-            username: 'ropeswitch',
-            displayName: 'RopeSwitch',
-            pronouns: 'they/them',
-            flair: 'Switch',
-            mutualGroups: ['RopeDojo', 'Consent Circle']
-          }
-        });
-        return el;
-      }}>
-        <strong>{entry.title}</strong>
-      </span><br />
-
+      <strong>{entry.title}</strong><br />
       <em>{entry.content}</em>
-      <CommentThread
-        comments={[{ author: "VelvetTop", text: "Thank you for sharing this.", timestamp: "3h ago" }]}
-        onComment={(t) => console.log("New comment:", t)}
-      />
+
+      <div class="comment-thread">
+        <h4>?? Comments</h4>
+        <ul>
+          <li>
+            <span use:useHoverPreview={getAuthorPreview}><strong>VelvetTop</strong></span> <span class="ts">3h ago</span><br />
+            <span>Thank you for sharing this.</span>
+          </li>
+        </ul>
+      </div>
+
       {#if isCW(entry) && shown[entry.id]}
         <p class="note">(CW revealed)</p>
       {/if}
@@ -68,4 +74,5 @@
     z-index: 5; border: 1px solid #888; border-radius: 4px;
   }
   .note { font-size: 0.75rem; color: #aaa; }
+  .ts { color: #888; font-size: 0.75rem; margin-left: 0.25rem; }
 </style>
