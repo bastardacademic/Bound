@@ -2,6 +2,8 @@
   import CommentThread from "$lib/components/CommentThread.svelte";
   import ProfilePreviewCard from "$lib/components/ProfilePreviewCard.svelte";
   import { useHoverPreview } from "$lib/utils/useHoverPreview";
+  import { pinnedItems, togglePin } from "$lib/stores/pins";
+  import { get } from "svelte/store";
 
   let shown = {};
   function isCW(entry) {
@@ -47,6 +49,9 @@
 
       <strong>{entry.title}</strong><br />
       <em>{entry.content}</em>
+      <button on:click={() => togglePin("journal", entry.id)}>
+        {#if get(pinnedItems).some(p => p.id === entry.id)}?? Unpin{:else}?? Pin{/if}
+      </button>
 
       <div class="comment-thread">
         <h4>?? Comments</h4>
