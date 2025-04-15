@@ -1,41 +1,48 @@
 <script lang="ts">
-  import { onMount } from "svelte";
-  import { page } from "$app/stores";
-  import ReportButton from "$lib/components/ReportButton.svelte";
-  let username = "";
-  let user = null;
-  let message = "";
-  $: username = $page.params.username;
-  onMount(async () => {
-    const res = await fetch("/api/users/" + username);
-    if (res.ok) user = await res.json();
-  });
-  async function muteUser() {
-    await fetch("/api/users/mute", {
-      method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username })
-    });
-    message = "User muted.";
-  }
-  async function blockUser() {
-    await fetch("/api/users/block", {
-      method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username })
-    });
-    message = "User blocked.";
-  }
+  import { pinnedItems } from "$lib/stores/pins";
+  import { get } from "svelte/store";
+
+  let profile = {
+    username: "kinkenthusiast",
+    displayName: "KinkEnthusiast",
+    pronouns: "they/them",
+    flair: "Explorer"
+  };
+
+  const pins = get(pinnedItems);
+  const pinnedJournal = pins.find(p => p.type === "journal");
+  const pinnedMedia = pins.find(p => p.type === "media");
 </script>
 
-<h2>Profile: {username}</h2>
-{#if user}
-  <p><strong>Pronouns:</strong> {user.pronouns}</p>
-  <p><strong>Orientation:</strong> {user.orientation}</p>
-  <div class="actions">
-    <button on:click={muteUser}>Mute</button>
-    <button on:click={blockUser}>Block</button>
-    <ReportButton targetId={username} type="user" />
-  </div>
-{:else}
-  <p>Loading profile...</p>
+<h2>{profile.displayName}</h2>
+<p>@{profile.username} • {profile.pronouns} • <strong>{profile.flair}</strong></p>
+
+{#if pinnedJournal}
+  <section>
+    <h3>?? Pinned Journal</h3>
+    <div class="pinned-card">
+      <strong>Post #{pinnedJournal.id}</strong><br />
+      <p>[Journal content will load here]</p>
+    </div>
+  </section>
 {/if}
-{#if message}<p style="color: green;">{message}</p>{/if}
+
+{#if pinnedMedia}
+  <section>
+    <h3>?? Pinned Media</h3>
+    <div class="pinned-card">
+      <strong>Media #{pinnedMedia.id}</strong><br />
+      <p>[Media preview will load here]</p>
+    </div>
+  </section>
+{/if}
+
+<style>
+  .pinned-card {
+    border: 1px solid #444;
+    padding: 1rem;
+    border-radius: 6px;
+    margin: 1rem 0;
+    background: #111;
+  }
+</style>
