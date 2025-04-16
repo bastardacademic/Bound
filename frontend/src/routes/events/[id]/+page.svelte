@@ -1,38 +1,42 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
-  import { page } from '$app/stores';
-  import { session } from '$stores/session';
-  import { goto } from '$app/navigation';
-  import { get } from 'svelte/store';
+  import { page } from "$app/stores";
+  import { session } from "$stores/session";
+  import { get } from "svelte/store";
 
-  let eventId = '';
+  let eventId = "";
   let event = null;
-  let message = '';
+  let message = "";
 
   $: eventId = $page.params.id;
 
-  onMount(async () => {
+  async function fetchEvent() {
     const { token } = get(session);
-    if (!token) goto('/login');
-
-    const res = await fetch('/api/events/' + eventId);
+    const res = await fetch(`/api/events/${eventId}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
     if (res.ok) {
       event = await res.json();
     }
-  });
+  }
 
-  async function rsvp(status: 'interested' | 'going') {
-    const res = await fetch('/api/events/' + eventId + '/rsvp', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+  async function rsvp(status: "interested" | "going") {
+    const { token } = get(session);
+    const res = await fetch(`/api/events/${eventId}/rsvp`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
       body: JSON.stringify({ status })
     });
     if (res.ok) {
-      message = 'RSVP updated.';
+      message = "RSVP updated.";
     } else {
-      message = 'Failed to RSVP.';
+      message = "Failed to RSVP.";
     }
   }
+
+  fetchEvent();
 </script>
 
 {#if event}
@@ -41,8 +45,8 @@
   <p><strong>Location:</strong> {event.location}</p>
   <p>{event.description}</p>
 
-  <button on:click={() => rsvp('interested')}>Maybe</button>
-  <button on:click={() => rsvp('going')}>See You There!</button>
+  <button on:click={() => rsvp("interested")}>Maybe</button>
+  <button on:click={() => rsvp("going")}>See You There!</button>
   {#if message}<p style="color: green;">{message}</p>{/if}
 {:else}
   <p>Loading event...</p>
