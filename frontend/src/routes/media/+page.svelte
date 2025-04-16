@@ -3,38 +3,32 @@
   import ProfilePreviewCard from "$lib/components/ProfilePreviewCard.svelte";
   import { useHoverPreview } from "$lib/utils/useHoverPreview";
   import { pinnedItems, togglePin } from "$lib/stores/pins";
+  import { session } from "$stores/session";
   import { get } from "svelte/store";
 
+  let posts = [];
   let shown = {};
+
   function isCW(post) {
     return post.title?.toLowerCase().startsWith("cw:") || post.tags?.some(t => t.toLowerCase().startsWith("cw:"));
   }
+
   function toggleCW(id) {
     shown[id] = !shown[id];
   }
 
-  let posts = [
-    {
-      id: "media1",
-      title: "cw: sensory deprivation shoot",
-      tags: ["cw:sensory"]
-    }
-  ];
-
-  const getAuthorPreview = () => {
-    const el = document.createElement("div");
-    new ProfilePreviewCard({
-      target: el,
-      props: {
-        username: "scenecurator",
-        displayName: "SceneCurator",
-        pronouns: "they/them",
-        flair: "Observer",
-        mutualGroups: ["KinkPhoto Meetup"]
-      }
+  async function fetchMedia() {
+    const { token } = get(session);
+    const res = await fetch("/api/media", {
+      headers: { Authorization: `Bearer ${token}` }
     });
-    return el;
-  };
+    if (res.ok) {
+      const data = await res.json();
+      posts = data.posts;
+    }
+  }
+
+  fetchMedia();
 </script>
 
 <h2>Media Gallery</h2>
@@ -46,20 +40,31 @@
         <button on:click={() => toggleCW(post.id)} class="reveal">?? Content Warning – Click to Reveal</button>
       {/if}
 
-      <strong>{post.title}</strong><br />
+      <span use:useHoverPreview={() => {
+        const el = document.createElement("div");
+        new ProfilePreviewCard({
+          target: el,
+          props: {
+            username: post.author.username,
+            displayName: post.author.displayName,
+            pronouns: post.author.pronouns,
+            flair: post.author.flair,
+            mutualGroups: post.author.mutualGroups || []
+          }
+        });
+        return el;
+      }}>
+        <strong>{post.title}</strong>
+      </span><br />
+
       <button on:click={() => togglePin("media", post.id)}>
         {#if get(pinnedItems).some(p => p.id === post.id)}?? Unpin{:else}?? Pin{/if}
       </button>
 
-      <div class="comment-thread">
-        <h4>?? Comments</h4>
-        <ul>
-          <li>
-            <span use:useHoverPreview={getAuthorPreview}><strong>SceneCurator</strong></span> <span class="ts">1h ago</span><br />
-            <span>This is beautiful work.</span>
-          </li>
-        </ul>
-      </div>
+      <CommentThread
+        comments={post.comments || []}
+        onComment={(t) => console.log("Media comment:", t)}
+      />
 
       {#if isCW(post) && shown[post.id]}
         <p class="note">(CW revealed)</p>
@@ -77,5 +82,4 @@
     z-index: 5; border: 1px solid #888; border-radius: 4px;
   }
   .note { font-size: 0.75rem; color: #aaa; }
-  .ts { color: #888; font-size: 0.75rem; margin-left: 0.25rem; }
 </style>
