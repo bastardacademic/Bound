@@ -3,39 +3,32 @@
   import ProfilePreviewCard from "$lib/components/ProfilePreviewCard.svelte";
   import { useHoverPreview } from "$lib/utils/useHoverPreview";
   import { pinnedItems, togglePin } from "$lib/stores/pins";
+  import { session } from "$stores/session";
   import { get } from "svelte/store";
 
+  let entries = [];
   let shown = {};
+
   function isCW(entry) {
     return entry.title?.toLowerCase().startsWith("cw:") || entry.tags?.some(t => t.toLowerCase().startsWith("cw:"));
   }
+
   function toggleCW(id) {
     shown[id] = !shown[id];
   }
 
-  let entries = [
-    {
-      id: "post1",
-      title: "cw: bloodplay reflections",
-      content: "This is a sensitive journal entry",
-      tags: ["cw:bloodplay"]
-    }
-  ];
-
-  const getAuthorPreview = () => {
-    const el = document.createElement("div");
-    new ProfilePreviewCard({
-      target: el,
-      props: {
-        username: "velvettop",
-        displayName: "VelvetTop",
-        pronouns: "she/her",
-        flair: "Top",
-        mutualGroups: ["BDSM Book Club"]
-      }
+  async function fetchEntries() {
+    const { token } = get(session);
+    const res = await fetch("/api/journal", {
+      headers: { Authorization: `Bearer ${token}` }
     });
-    return el;
-  };
+    if (res.ok) {
+      const data = await res.json();
+      entries = data.entries;
+    }
+  }
+
+  fetchEntries();
 </script>
 
 <h2>My Journal</h2>
@@ -47,21 +40,33 @@
         <button on:click={() => toggleCW(entry.id)} class="reveal">?? Content Warning – Click to Reveal</button>
       {/if}
 
-      <strong>{entry.title}</strong><br />
+      <span use:useHoverPreview={() => {
+        const el = document.createElement("div");
+        new ProfilePreviewCard({
+          target: el,
+          props: {
+            username: entry.author.username,
+            displayName: entry.author.displayName,
+            pronouns: entry.author.pronouns,
+            flair: entry.author.flair,
+            mutualGroups: entry.author.mutualGroups || []
+          }
+        });
+        return el;
+      }}>
+        <strong>{entry.title}</strong>
+      </span><br />
+
       <em>{entry.content}</em>
+
       <button on:click={() => togglePin("journal", entry.id)}>
         {#if get(pinnedItems).some(p => p.id === entry.id)}?? Unpin{:else}?? Pin{/if}
       </button>
 
-      <div class="comment-thread">
-        <h4>?? Comments</h4>
-        <ul>
-          <li>
-            <span use:useHoverPreview={getAuthorPreview}><strong>VelvetTop</strong></span> <span class="ts">3h ago</span><br />
-            <span>Thank you for sharing this.</span>
-          </li>
-        </ul>
-      </div>
+      <CommentThread
+        comments={entry.comments || []}
+        onComment={(t) => console.log("New comment:", t)}
+      />
 
       {#if isCW(entry) && shown[entry.id]}
         <p class="note">(CW revealed)</p>
@@ -79,5 +84,4 @@
     z-index: 5; border: 1px solid #888; border-radius: 4px;
   }
   .note { font-size: 0.75rem; color: #aaa; }
-  .ts { color: #888; font-size: 0.75rem; margin-left: 0.25rem; }
 </style>
