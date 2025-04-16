@@ -1,40 +1,56 @@
 <script lang="ts">
+  import { page } from "$app/stores";
   import { pinnedItems } from "$lib/stores/pins";
+  import { session } from "$stores/session";
   import { get } from "svelte/store";
 
-  let profile = {
-    username: "kinkenthusiast",
-    displayName: "KinkEnthusiast",
-    pronouns: "they/them",
-    flair: "Explorer"
-  };
+  let username = "";
+  let profile = null;
+  let pinnedJournal = null;
+  let pinnedMedia = null;
 
-  const pins = get(pinnedItems);
-  const pinnedJournal = pins.find(p => p.type === "journal");
-  const pinnedMedia = pins.find(p => p.type === "media");
+  $: username = $page.params.username;
+
+  async function fetchProfile() {
+    const { token } = get(session);
+    const res = await fetch(`/api/profile/${username}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if (res.ok) {
+      profile = await res.json();
+      pinnedJournal = profile.pinned?.journal || null;
+      pinnedMedia = profile.pinned?.media || null;
+    }
+  }
+
+  fetchProfile();
 </script>
 
-<h2>{profile.displayName}</h2>
-<p>@{profile.username} • {profile.pronouns} • <strong>{profile.flair}</strong></p>
+{#if profile}
+  <h2>{profile.displayName}</h2>
+  <p>@{profile.username} • {profile.pronouns} • <strong>{profile.flair}</strong></p>
 
-{#if pinnedJournal}
-  <section>
-    <h3>?? Pinned Journal</h3>
-    <div class="pinned-card">
-      <strong>Post #{pinnedJournal.id}</strong><br />
-      <p>[Journal content will load here]</p>
-    </div>
-  </section>
-{/if}
+  {#if pinnedJournal}
+    <section>
+      <h3>?? Pinned Journal</h3>
+      <div class="pinned-card">
+        <strong>{pinnedJournal.title}</strong><br />
+        <p>{pinnedJournal.excerpt}</p>
+      </div>
+    </section>
+  {/if}
 
-{#if pinnedMedia}
-  <section>
-    <h3>?? Pinned Media</h3>
-    <div class="pinned-card">
-      <strong>Media #{pinnedMedia.id}</strong><br />
-      <p>[Media preview will load here]</p>
-    </div>
-  </section>
+  {#if pinnedMedia}
+    <section>
+      <h3>?? Pinned Media</h3>
+      <div class="pinned-card">
+        <strong>{pinnedMedia.title}</strong><br />
+        <p>[Media Preview]</p>
+      </div>
+    </section>
+  {/if}
+{:else}
+  <p>Loading profile…</p>
 {/if}
 
 <style>
