@@ -32,14 +32,12 @@
 </script>
 
 <h2>My Journal</h2>
-
 <ul>
   {#each entries as entry}
     <li class:blurred={isCW(entry) && !shown[entry.id]}>
       {#if isCW(entry) && !shown[entry.id]}
         <button on:click={() => toggleCW(entry.id)} class="reveal">?? Content Warning – Click to Reveal</button>
       {/if}
-
       <span use:useHoverPreview={() => {
         const el = document.createElement("div");
         new ProfilePreviewCard({
@@ -56,25 +54,15 @@
       }}>
         <strong>{entry.title}</strong>
       </span><br />
-
       <em>{entry.content}</em>
-
       <button on:click={() => togglePin("journal", entry.id)}>
         {#if get(pinnedItems).some(p => p.id === entry.id)}?? Unpin{:else}?? Pin{/if}
       </button>
-
-      <CommentThread
-        comments={entry.comments || []}
-        onComment={(t) => console.log("New comment:", t)}
-      />
-
-      {#if isCW(entry) && shown[entry.id]}
-        <p class="note">(CW revealed)</p>
-      {/if}
+      <CommentThread comments={entry.comments || []} onComment={(t) => console.log("New comment:", t)} />
+      {#if isCW(entry) && shown[entry.id]}<p class="note">(CW revealed)</p>{/if}
     </li>
   {/each}
 </ul>
-
 <style>
   .blurred { filter: blur(4px); position: relative; }
   .reveal {
