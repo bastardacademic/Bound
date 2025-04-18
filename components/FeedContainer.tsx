@@ -1,1 +1,1 @@
-﻿// content omitted for brevity — use full FeedContainer.tsx from earlier
+﻿// INSERT FULL FeedContainer.tsx CONTENT HERE
