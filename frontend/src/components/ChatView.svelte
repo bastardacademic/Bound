@@ -1,4 +1,4 @@
-<script lang="ts">
+﻿<script lang="ts">
   import { onMount } from "svelte";
   import { page } from "$app/stores";
   import { invalidate } from "$app/navigation";
@@ -11,3 +11,4 @@
   let loading = true;
 
   async function fetchMessages() {
+

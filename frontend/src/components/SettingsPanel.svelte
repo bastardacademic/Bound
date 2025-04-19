@@ -46,7 +46,7 @@
   }
 </script>
 
-<div class="p-4 max-w-xl mx-auto space-y-4">
+<div class="p-4 max-w-2xl mx-auto space-y-4">
   <h2 class="text-xl font-semibold">Edit Profile</h2>
 
   {#if loading}
@@ -54,18 +54,18 @@
   {:else}
     <form on:submit|preventDefault={saveSettings} class="space-y-4">
       <div>
-        <label class="block text-sm font-medium">Avatar URL</label>
+        <label class="block text-base font-medium">Avatar URL</label>
         <input
           type="text"
           bind:value={avatarUrl}
-          class="w-full mt-1 p-2 rounded border border-muted bg-background"
+          class="w-full mt-1 p-3 rounded-xl border border-muted bg-background"
         />
       </div>
 
       <div>
-        <label class="block text-sm font-medium">Flair</label>
+        <label class="block text-base font-medium">Flair</label>
         {#if isCommercial}
-          <select bind:value={flair} class="w-full mt-1 p-2 rounded border border-muted">
+          <select bind:value={flair} class="w-full mt-1 p-3 rounded-xl border border-muted">
             <option disabled value="">-- Select --</option>
             <option value="Merchant">Merchant</option>
             <option value="Model">Model</option>
@@ -75,31 +75,31 @@
             type="text"
             bind:value={flair}
             placeholder="e.g. brat, voyeur, domme"
-            class="w-full mt-1 p-2 rounded border border-muted bg-background"
+            class="w-full mt-1 p-3 rounded-xl border border-muted bg-background"
           />
         {/if}
       </div>
 
       <div>
-        <label class="block text-sm font-medium">Bio</label>
+        <label class="block text-base font-medium">Bio</label>
         <textarea
           bind:value={bio}
           rows="4"
-          class="w-full mt-1 p-2 rounded border border-muted bg-background"
+          class="w-full mt-1 p-3 rounded-xl border border-muted bg-background"
         ></textarea>
       </div>
 
       {#if error}
-        <div class="text-sm text-red-500">{error}</div>
+        <div class="text-base text-destructive">{error}</div>
       {/if}
 
       {#if success}
-        <div class="text-sm text-green-600">Settings saved!</div>
+        <div class="text-base text-success-foreground">Settings saved!</div>
       {/if}
 
       <button
         type="submit"
-        class="bg-primary text-primary-foreground rounded px-4 py-2"
+        class="bg-primary text-primary-foreground rounded-xl px-4 py-2"
         disabled={saving}
       >
         {saving ? 'Saving…' : 'Save Changes'}
@@ -107,3 +107,4 @@
     </form>
   {/if}
 </div>
+

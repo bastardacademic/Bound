@@ -23,29 +23,29 @@
 {#if loading}
   <div class="p-4">Loading profile…</div>
 {:else if error}
-  <div class="p-4 text-red-500">{error}</div>
+  <div class="p-4 text-destructive">{error}</div>
 {:else}
   <div class="p-4 space-y-4">
     <div class="flex items-center gap-4">
-      <img src={profile.avatarUrl} alt="avatar" class="w-12 h-12 rounded-full" />
+      <img src={profile.avatarUrl} alt="avatar" class="w-12 h-12 rounded-xl-full" />
       <div>
         <h2 class="text-lg font-semibold">@{profile.username}</h2>
         {#if profile.flair}
-          <p class="text-sm text-muted-foreground">[{profile.flair}]</p>
+          <p class="text-base text-muted-foreground">[{profile.flair}]</p>
         {/if}
       </div>
     </div>
 
     {#if profile.badges?.length}
-      <div class="flex flex-wrap gap-2 text-sm">
+      <div class="flex flex-wrap gap-3 text-base">
         {#each profile.badges as badge}
-          <span class="bg-accent px-2 py-1 rounded-full">🏅 {badge}</span>
+          <span class="bg-accent px-2 py-1 rounded-xl-full">🏅 {badge}</span>
         {/each}
       </div>
     {/if}
 
     {#if profile.bio}
-      <p class="text-sm text-muted-foreground">{profile.bio}</p>
+      <p class="text-base text-muted-foreground">{profile.bio}</p>
     {/if}
 
     {#if profile.isSelf}
@@ -53,3 +53,4 @@
     {/if}
   </div>
 {/if}
+
