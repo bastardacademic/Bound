@@ -1,5 +1,5 @@
-﻿<script lang="ts">
+﻿<script lang=\"ts\">
   import FeedContainer from '@/components/FeedContainer';
 </script>
 
-<FeedContainer endpoint="sizzling" title="Sizzling & Slutty" />
+<FeedContainer endpoint=\"sizzling\" title=\"Sizzling & Slutty\" />
