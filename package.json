@@ -1,0 +1,17 @@
+﻿{
+    "name":  "bound",
+    "version":  "1.0.0",
+    "private":  true,
+    "scripts":  {
+                    "dev":  "svelte-kit dev",
+                    "build":  "svelte-kit build",
+                    "preview":  "svelte-kit preview",
+                    "generateSdk":  "openapi-typescript openapi.json --output src/lib/sdk/openapi.ts"
+                },
+    "devDependencies":  {
+                            "commander":  "^9.5.0",
+                            "node-fetch":  "^2.7.0",
+                            "openapi-typescript":  "^7.6.1",
+                            "ts-node":  "^10.9.2"
+                        }
+}
