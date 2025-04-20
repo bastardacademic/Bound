@@ -1,0 +1,19 @@
+﻿{
+  "newJournalEntry": "New Journal Entry",
+  "writeYourEntry": "Write your entry...",
+  "tags": "Tags",
+  "post": "Post",
+  "approve": "Approve",
+  "remove": "Remove",
+  "suspend": "Suspend",
+  "unsuspend": "Unsuspend",
+  "flaggedPosts": "Flagged Posts",
+  "noFlaggedPosts": "No flagged posts.",
+  "userManagement": "User Management",
+  "yes": "Yes",
+  "no": "No",
+  "createPoll": "Create Poll",
+  "uploadAndPost": "Upload & Post",
+  "save": "Save",
+  "cancel": "Cancel"
+}
