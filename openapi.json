@@ -1,0 +1,7 @@
+﻿{
+  "openapi": "3.0.1",
+  "info": { "title": "Bound API", "version": "1.0.0" },
+  "paths": {
+    "/api/posts/journal": {"post": {"summary": "Create journal post"}}
+  }
+}

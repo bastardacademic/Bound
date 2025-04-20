@@ -32,14 +32,12 @@
 </script>
 
 <h2>Media Gallery</h2>
-
 <ul>
   {#each posts as post}
     <li class:blurred={isCW(post) && !shown[post.id]}>
       {#if isCW(post) && !shown[post.id]}
         <button on:click={() => toggleCW(post.id)} class="reveal">?? Content Warning – Click to Reveal</button>
       {/if}
-
       <span use:useHoverPreview={() => {
         const el = document.createElement("div");
         new ProfilePreviewCard({
@@ -56,23 +54,14 @@
       }}>
         <strong>{post.title}</strong>
       </span><br />
-
       <button on:click={() => togglePin("media", post.id)}>
         {#if get(pinnedItems).some(p => p.id === post.id)}?? Unpin{:else}?? Pin{/if}
       </button>
-
-      <CommentThread
-        comments={post.comments || []}
-        onComment={(t) => console.log("Media comment:", t)}
-      />
-
-      {#if isCW(post) && shown[post.id]}
-        <p class="note">(CW revealed)</p>
-      {/if}
+      <CommentThread comments={post.comments || []} onComment={(t) => console.log("Media comment:", t)} />
+      {#if isCW(post) && shown[post.id]}<p class="note">(CW revealed)</p>{/if}
     </li>
   {/each}
 </ul>
-
 <style>
   .blurred { filter: blur(4px); position: relative; }
   .reveal {
