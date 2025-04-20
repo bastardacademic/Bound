@@ -1,33 +1,33 @@
-version: '3.8'
+﻿version: '3.8'
 services:
-  db:
-    image: postgres:15
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:latest
+    command: ["--config=/etc/otel-collector-config.yaml"]
+    volumes:
+      - ./otel-collector-config.yaml:/etc/otel-collector-config.yaml
     ports:
-      - "5432:5432"
+      - 4317:4317
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - 9090:9090
+  grafana:
+    image: grafana/grafana:latest
     environment:
-      POSTGRES_USER: bounduser
-      POSTGRES_PASSWORD: boundpass
-      POSTGRES_DB: bounddb
-    volumes:
-      - db_data:/var/lib/postgresql/data
-
-  backend:
-    build: ./backend
-    volumes:
-      - ./backend:/app
+      - GF_SECURITY_ADMIN_PASSWORD=admin
     ports:
-      - "3000:3000"
-    depends_on:
-      - db
-    environment:
-      DATABASE_URL: postgres://bounduser:boundpass@db:5432/bounddb
-
-  frontend:
-    build: ./frontend
+      - 3000:3000
+  loki:
+    image: grafana/loki:2.8.2
     ports:
-      - "5173:5173"
+      - 3100:3100
+  promtail:
+    image: grafana/promtail:2.8.2
     volumes:
-      - ./frontend:/app
-
-volumes:
-  db_data:
+      - /var/log:/var/log
+      - ./promtail-config.yaml:/etc/promtail/config.yaml
+    entrypoint: ["/usr/bin/promtail", "-config.file=/etc/promtail/config.yaml"]
+    ports:
+      - 9080:9080
