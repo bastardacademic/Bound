@@ -1,17 +1,12 @@
-<script lang="ts">
+﻿<script lang="ts">
   import { theme } from "$stores/theme";
-  let current;
-  $: $theme.subscribe(value => current = value);
-
   function toggle() {
-    theme.set(current === "dark" ? "light" : "dark");
+    theme.update(t => t === "dark" ? "light" : "dark");
   }
 </script>
-
-<button on:click={toggle}>
-  Switch to {current === "dark" ? "Light" : "Dark"} Mode
+<button onclick={toggle}>
+  Switch to {$theme === "dark" ? "Light" : "Dark"} Mode
 </button>
-
 <style>
   button {
     margin: 1rem 0;

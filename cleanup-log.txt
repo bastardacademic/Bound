@@ -1,0 +1,46 @@
+﻿=== BOUND CLEANUP LOG ===
+Run at: 04/10/2026 14:12:23
+
+--- Step 1: Archive directory created at _archive ---
+
+--- Step 2: Dead backends ---
+  ARCHIVED: backend
+  ARCHIVED: pages
+  ARCHIVED: client
+
+--- Step 3: Firebase ---
+  ARCHIVED FILE: server\src\firebase.js
+
+--- Step 4: Merge \src into \frontend\src ---
+  MERGED: src\lib\components\ConsentTimeline.svelte -> frontend\src\lib\components\ConsentTimeline.svelte
+  MERGED: src\lib\components\PushToggle.svelte -> frontend\src\lib\components\PushToggle.svelte
+  MERGED: src\lib\components\RichEditor.svelte -> frontend\src\lib\components\RichEditor.svelte
+  MERGED: src\lib\featureFlags.ts -> frontend\src\lib\featureFlags.ts
+  MERGED: src\lib\graphql\pubsub.ts -> frontend\src\lib\graphql\pubsub.ts
+  MERGED: src\lib\queue.ts -> frontend\src\lib\queue.ts
+  MERGED: src\lib\sdk\index.ts -> frontend\src\lib\sdk\index.ts
+  MERGED: src\lib\sdk\openapi.ts -> frontend\src\lib\sdk\openapi.ts
+  MERGED: src\routes\admin\jobs\polls\+page.svelte -> frontend\src\routes\admin\jobs\polls\+page.svelte
+  MERGED: src\routes\admin\metrics\+page.svelte -> frontend\src\routes\admin\metrics\+page.svelte
+  MERGED: src\routes\admin\rate-limit\+page.svelte -> frontend\src\routes\admin\rate-limit\+page.svelte
+  MERGED: src\routes\admin\sessions\+page.svelte -> frontend\src\routes\admin\sessions\+page.svelte
+  ARCHIVED: src
+
+--- Step 5: Duplicate migration analysis ---
+  The following migration files are 1-line stubs and should be replaced or removed.
+  Review manually in \server\migrations\ before touching.
+
+  No stub migrations found.
+
+--- Summary ---
+  Canonical frontend: \frontend\src\
+  Canonical backend:  \server\src\
+  Archived dead code: \_archive\
+  Firebase:           archived (review auth strategy)
+  Stub migrations:    flagged above (review manually)
+
+  Next steps:
+  1. Review _archive\ - delete it when satisfied
+  2. Replace stub migrations or consolidate into Prisma schema
+  3. Wire frontend\src\ to server\src\ with a single base URL
+  4. Continue feature work: notifications, search, follows

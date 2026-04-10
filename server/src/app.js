@@ -1,109 +1,59 @@
-﻿const express = require('express');
-const app = express();
-app.use(express.json());
+require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
 
-// Add your routes here
+const app = express();
+
+// --- Middleware ---
+app.use(cors({
+    origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
+    credentials: true
+}));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// --- Routes ---
+app.use('/api/user',          require('./routes/user'));
+app.use('/api/auth',          require('./routes/auth'));
+app.use('/api/posts',         require('./routes/posts'));
+app.use('/api/posts',         require('./routes/reactions'));
+app.use('/api/posts',         require('./routes/comments'));
+app.use('/api/groups',        require('./routes/groups'));
+app.use('/api/notifications', require('./routes/notifications'));
+app.use('/api/notification-preferences', require('./routes/notification-preferences'));
+app.use('/api/profile',       require('./routes/profile'));
+app.use('/api/feeds',         require('./routes/feeds'));
+app.use('/api/events',        require('./routes/events'));
+app.use('/api/moderation',    require('./routes/moderation'));
+app.use('/api/privacy',       require('./routes/privacy'));
+app.use('/api/messages',      require('./routes/messages'));
+app.use('/api/feedback',      require('./routes/feedback'));
+app.use('/api/analytics',     require('./routes/analytics'));
+app.use('/api/polls',         require('./routes/polls'));
+app.use('/api/tags',          require('./routes/tags'));
+app.use('/api/preferences',   require('./routes/preferences'));
+app.use('/api/password',      require('./routes/password'));
+app.use('/api/discovery',     require('./routes/discovery'));
+app.use('/api/karma',         require('./routes/karma'));
+app.use('/api/refresh',       require('./routes/refresh'));
+app.use('/api/i18n',          require('./routes/i18n'));
+app.use('/api',               require('./routes/protected'));
+
+// --- Security route (stub — implement before enabling) ---
+// app.use('/api/security', require('./routes/security'));
+
+// --- Health check ---
+app.get('/health', (req, res) => res.json({ status: 'ok' }));
+
+// --- 404 handler ---
+app.use((req, res) => {
+    res.status(404).json({ error: 'Not found' });
+});
+
+// --- Global error handler ---
+app.use((err, req, res, next) => {
+    console.error(err);
+    res.status(err.status || 500).json({ error: err.message || 'Internal server error' });
+});
 
 module.exports = app;
-const userRoutes = require('./routes/user');
-app.use('/api/user', userRoutes);
-const userRoutes = require('./routes/user');
-app.use('/api/user', userRoutes);
-const userRoutes = require('./routes/user');
-app.use('/api/user', userRoutes);
-const userRoutes = require('./routes/user');
-app.use('/api/user', userRoutes);
-const userRoutes = require('./routes/user');
-app.use('/api/user', userRoutes);
-const userRoutes = require('./routes/user');
-app.use('/api/user', userRoutes);
-const postRoutes = require('./routes/posts');
-app.use('/api/posts', postRoutes);
-const postRoutes = require('./routes/posts');
-app.use('/api/posts', postRoutes);
-const reactionsRoutes = require('./routes/reactions');
-app.use('/api/posts', reactionsRoutes);
-const commentsRoutes = require('./routes/comments');
-app.use('/api/posts', commentsRoutes);
-const reactionsRoutes = require('./routes/reactions');
-app.use('/api/posts', reactionsRoutes);
-const commentsRoutes = require('./routes/comments');
-app.use('/api/posts', commentsRoutes);
-const reactionsRoutes = require('./routes/reactions');
-app.use('/api/posts', reactionsRoutes);
-const commentsRoutes = require('./routes/comments');
-app.use('/api/posts', commentsRoutes);
-const reactionsRoutes = require('./routes/reactions');
-app.use('/api/posts', reactionsRoutes);
-const commentsRoutes = require('./routes/comments');
-app.use('/api/posts', commentsRoutes);
-const reactionsRoutes = require('./routes/reactions');
-app.use('/api/posts', reactionsRoutes);
-const commentsRoutes = require('./routes/comments');
-app.use('/api/posts', commentsRoutes);
-const reactionsRoutes = require('./routes/reactions');
-app.use('/api/posts', reactionsRoutes);
-const commentsRoutes = require('./routes/comments');
-app.use('/api/posts', commentsRoutes);
-const reactionsRoutes = require('./routes/reactions');
-app.use('/api/posts', reactionsRoutes);
-const commentsRoutes = require('./routes/comments');
-app.use('/api/posts', commentsRoutes);
-const reactionsRoutes = require('./routes/reactions');
-app.use('/api/posts', reactionsRoutes);
-const commentsRoutes = require('./routes/comments');
-app.use('/api/posts', commentsRoutes);
-const groupRoutes = require('./routes/groups');
-app.use('/api/groups', groupRoutes);
-const groupRoutes = require('./routes/groups');
-app.use('/api/groups', groupRoutes);
-const groupRoutes = require('./routes/groups');
-app.use('/api/groups', groupRoutes);
-const groupRoutes = require('./routes/groups');
-app.use('/api/groups', groupRoutes);
-const notificationRoutes = require('./routes/notifications');
-app.use('/api/notifications', notificationRoutes);
-const notificationRoutes = require('./routes/notifications');
-app.use('/api/notifications', notificationRoutes);
-const profileRoutes = require('./routes/profile');
-app.use('/api/profile', profileRoutes);
-const feedsRoutes = require('./routes/feeds');
-app.use('/api/feeds', feedsRoutes);
-const eventsRoutes = require('./routes/events');
-app.use('/api/events', eventsRoutes);
-const eventsRoutes = require('./routes/events');
-app.use('/api/events', eventsRoutes);
-const moderationRoutes = require('./routes/moderation');
-app.use('/api/moderation', moderationRoutes);
-const moderationRoutes = require("./routes/moderation");
-app.use("/api/moderation", moderationRoutes);
-const privacyRoutes = require("./routes/privacy");
-app.use("/api/privacy", privacyRoutes);
-const groupRoutes = require("./routes/groups");
-app.use("/api/groups", groupRoutes);
-const privacyRoutes = require("./routes/privacy");
-app.use("/api/privacy", privacyRoutes);
-const messagesRoutes = require("./routes/messages");
-app.use("/api/messages", messagesRoutes);
-const privacyRoutes = require("./routes/privacy");
-app.use("/api/privacy", privacyRoutes);
-const feedbackRoutes = require("./routes/feedback");
-app.use("/api/feedback", feedbackRoutes);
-const moderationRoutes = require("./routes/moderation");
-app.use("/api/moderation", moderationRoutes);
-const eventRoutes = require("./routes/events");
-app.use("/api/events", eventRoutes);
-const notificationsRoutes = require("./routes/notifications");
-app.use("/api/notifications", notificationsRoutes);
-const analyticsRoutes = require("./routes/analytics");
-app.use("/api/analytics", analyticsRoutes);
-const securityRoutes = require("./routes/security");
-app.use("/api/security", securityRoutes);
-const feedbackRoutes = require("./routes/feedback");
-app.use("/api/feedback", feedbackRoutes);
-const pollsRoutes = require("./routes/polls");
-app.use("/api/polls", pollsRoutes);
-const i18nRoutes = require("./routes/i18n");
-app.use("/api/i18n", i18nRoutes);
-const i18nRoutes = require("./routes/i18n");
-app.use("/api/i18n", i18nRoutes);

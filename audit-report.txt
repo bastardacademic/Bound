@@ -1,0 +1,368 @@
+﻿=== BOUND REPO AUDIT ===
+Run at: 04/10/2026 13:47:17
+Root: D:\MEGA\MEGAsync\GitHub\Bound
+
+--- BRACKET-NAMED FILES (expected from handover) ---
+  MISSING: pages\api\posts\[type].ts
+  MISSING: pages\api\chat\[threadId].ts
+  MISSING: pages\api\chat\[partnerId].ts
+
+--- EXPECTED FILES CHECKLIST ---
+  MISSING: src\lib\eventEmitter.ts
+  MISSING: src\lib\stores\realTime.ts
+  FOUND (8 lines): src\routes\+layout.svelte
+  FOUND (9 lines): static\manifest.json
+  MISSING: prisma\schema.prisma
+  FOUND (9 lines): load-test\loadtest.yml
+  FOUND (16 lines): .github\workflows\ci.yml
+  MISSING: jest.config.js
+  MISSING: cypress.config.js
+  MISSING: api\auth\register.ts
+  MISSING: api\auth\login.ts
+  MISSING: api\groups\index.ts
+  MISSING: api\profile\index.ts
+  MISSING: api\socket\events.ts
+  MISSING: components\PostForm.svelte
+
+--- STACK INCONSISTENCY SCAN ---
+  NEXT.JS patterns found in:
+    \backend\pages\api\admin\2fa-setup.ts
+    \backend\pages\api\admin\2fa-verify.ts
+    \backend\pages\api\admin\sessions.ts
+    \backend\pages\api\notifications\send.ts
+    \backend\pages\api\notifications\subscribe.ts
+    \backend\pages\api\search.ts
+    \pages\api\admin\poll-jobs.ts
+
+  EXPRESS patterns found in:
+    \server\src\routes\analytics.js
+    \server\src\routes\auth.js
+    \server\src\routes\comments.js
+    \server\src\routes\discovery.js
+    \server\src\routes\drilldown.js
+    \server\src\routes\events.js
+    \server\src\routes\feedback.js
+    \server\src\routes\feeds.js
+    \server\src\routes\groups.js
+    \server\src\routes\i18n.js
+    \server\src\routes\index.js
+    \server\src\routes\karma.js
+    \server\src\routes\messages.js
+    \server\src\routes\moderation.js
+    \server\src\routes\notification-preferences.js
+    \server\src\routes\notifications.js
+    \server\src\routes\password.js
+    \server\src\routes\polls.js
+    \server\src\routes\posts.js
+    \server\src\routes\preferences.js
+    \server\src\routes\privacy.js
+    \server\src\routes\profile.js
+    \server\src\routes\protected.js
+    \server\src\routes\reactions.js
+    \server\src\routes\refresh.js
+    \server\src\routes\tags.js
+    \server\src\routes\user.js
+    \server\src\app.js
+    \server\server.js
+
+  No SvelteKit patterns found.
+
+--- ALL SOURCE FILES ---
+  (6 ln)  \backend\pages\api\admin\2fa-setup.ts
+  (7 ln)  \backend\pages\api\admin\2fa-verify.ts
+  (4 ln) *** STUB  \backend\pages\api\admin\sessions.ts
+  (18 ln)  \backend\pages\api\notifications\send.ts
+  (14 ln)  \backend\pages\api\notifications\subscribe.ts
+  (7 ln)  \backend\pages\api\search.ts
+  (16 ln)  \backend\src\app.module.ts
+  (12 ln)  \backend\src\auth\auth.controller.ts
+  (6 ln)  \backend\src\auth\auth.module.ts
+  (16 ln)  \backend\src\journal\journal.controller.ts
+  (6 ln)  \backend\src\journal\journal.module.ts
+  (21 ln)  \backend\src\journal\journal.service.ts
+  (7 ln)  \backend\src\main.ts
+  (20 ln)  \backend\src\messages\messages.controller.ts
+  (66 ln)  \backend\src\messages\messages.service.ts
+  (12 ln)  \backend\src\messaging\messaging.controller.ts
+  (6 ln)  \backend\src\messaging\messaging.module.ts
+  (12 ln)  \backend\src\moderation\moderation.controller.ts
+  (6 ln)  \backend\src\moderation\moderation.module.ts
+  (13 ln)  \backend\src\modules\journal\journal.controller.ts
+  (49 ln)  \backend\src\modules\journal\journal.service.ts
+  (13 ln)  \backend\src\modules\media\media.controller.ts
+  (50 ln)  \backend\src\modules\media\media.service.ts
+  (10 ln)  \backend\src\modules\profile\profile.controller.ts
+  (35 ln)  \backend\src\modules\profile\profile.service.ts
+  (16 ln)  \backend\src\settings\settings.controller.ts
+  (18 ln)  \backend\src\settings\settings.service.ts
+  (16 ln)  \backend\src\users\user.controller.ts
+  (6 ln)  \backend\src\users\user.module.ts
+  (25 ln)  \backend\src\users\user.service.ts
+  (49 ln)  \bin\bound-cli.ts
+  (1 ln) *** STUB  \client\src\api\index.js
+  (24 ln)  \client\src\components\DrillDown.js
+  (34 ln)  \client\src\components\FeedbackForm.js
+  (1 ln) *** STUB  \client\src\components\index.js
+  (1 ln) *** STUB  \client\src\pages\index.js
+  (1 ln) *** STUB  \client\src\redux\index.js
+  (6 ln)  \cypress\integration\smoke.spec.js
+  (17 ln)  \frontend\src\lib\components\Badge.svelte
+  (50 ln)  \frontend\src\lib\components\ChallengeForm.svelte
+  (65 ln)  \frontend\src\lib\components\CommentThread.svelte
+  (26 ln)  \frontend\src\lib\components\PremiumOnly.svelte
+  (31 ln)  \frontend\src\lib\components\ReactionPicker.svelte
+  (76 ln)  \frontend\src\lib\components\Reactions.svelte
+  (46 ln)  \frontend\src\lib\components\ReportButton.svelte
+  (22 ln)  \frontend\src\lib\components\ThemeToggle.svelte
+  (44 ln)  \frontend\src\lib\components\VoiceRecorder.svelte
+  (11 ln)  \frontend\src\lib\Footer.svelte
+  (3 ln) *** STUB  \frontend\src\lib\Header.svelte
+  (16 ln)  \frontend\src\lib\NavBar.svelte
+  (14 ln)  \frontend\src\lib\stores\groups.ts
+  (19 ln)  \frontend\src\lib\stores\pins.ts
+  (23 ln)  \frontend\src\lib\stores\ui.ts
+  (18 ln)  \frontend\src\lib\Toast.svelte
+  (46 ln)  \frontend\src\lib\utils\consent.ts
+  (15 ln)  \frontend\src\lib\utils\notifications.ts
+  (17 ln)  \frontend\src\routes\+layout.svelte
+  (6 ln)  \frontend\src\routes\+page.svelte
+  (51 ln)  \frontend\src\routes\achievements\+page.svelte
+  (35 ln)  \frontend\src\routes\admin\audit\+page.svelte
+  (47 ln)  \frontend\src\routes\admin\dashboard\+page.svelte
+  (65 ln)  \frontend\src\routes\admin\reports\+page.svelte
+  (44 ln)  \frontend\src\routes\admin\reports\archived\+page.svelte
+  (77 ln)  \frontend\src\routes\admin\tags\+page.svelte
+  (63 ln)  \frontend\src\routes\dashboard\+page.svelte
+  (62 ln)  \frontend\src\routes\dashboard\insights\+page.svelte
+  (0 ln) *** STUB  \frontend\src\routes\events\[id]\+page.svelte
+  (38 ln)  \frontend\src\routes\events\+page.svelte
+  (26 ln)  \frontend\src\routes\events\calendar\+page.svelte
+  (76 ln)  \frontend\src\routes\events\create\+page.svelte
+  (55 ln)  \frontend\src\routes\feed\discover\+page.svelte
+  (25 ln)  \frontend\src\routes\forgot\+page.svelte
+  (0 ln) *** STUB  \frontend\src\routes\groups\[id]\+page.svelte
+  (0 ln) *** STUB  \frontend\src\routes\groups\[id]\achievements\+page.svelte
+  (0 ln) *** STUB  \frontend\src\routes\groups\[id]\challenges\+page.svelte
+  (60 ln)  \frontend\src\routes\groups\create\+page.svelte
+  (51 ln)  \frontend\src\routes\home\+page.svelte
+  (69 ln)  \frontend\src\routes\journal\+page.svelte
+  (46 ln)  \frontend\src\routes\journal\collections\+page.svelte
+  (57 ln)  \frontend\src\routes\journal\view\+page.svelte
+  (29 ln)  \frontend\src\routes\login\+page.svelte
+  (73 ln)  \frontend\src\routes\media\+page.svelte
+  (57 ln)  \frontend\src\routes\media\review\+page.svelte
+  (0 ln) *** STUB  \frontend\src\routes\messages\[id]\+page.svelte
+  (66 ln)  \frontend\src\routes\messages\+page.svelte
+  (8 ln)  \frontend\src\routes\offline\+page.svelte
+  (16 ln)  \frontend\src\routes\onboarding\+layout.svelte
+  (43 ln)  \frontend\src\routes\onboarding\finish\+page.svelte
+  (30 ln)  \frontend\src\routes\onboarding\preferences\+page.svelte
+  (2 ln) *** STUB  \frontend\src\routes\onboarding\pronouns\+page.svelte
+  (58 ln)  \frontend\src\routes\onboarding\tags\+page.svelte
+  (2 ln) *** STUB  \frontend\src\routes\onboarding\welcome\+page.svelte
+  (67 ln)  \frontend\src\routes\post\media\+page.svelte
+  (76 ln)  \frontend\src\routes\post\poll\+page.svelte
+  (49 ln)  \frontend\src\routes\post\status\+page.svelte
+  (0 ln) *** STUB  \frontend\src\routes\profile\[username]\+page.svelte
+  (0 ln) *** STUB  \frontend\src\routes\profile\[username]\feed\+page.svelte
+  (21 ln)  \frontend\src\routes\profile\+page.svelte
+  (0 ln) *** STUB  \frontend\src\routes\profile\preview\[id]\+page.svelte
+  (62 ln)  \frontend\src\routes\reactions\create\+page.svelte
+  (58 ln)  \frontend\src\routes\reactions\packs\+page.svelte
+  (35 ln)  \frontend\src\routes\register\+page.svelte
+  (0 ln) *** STUB  \frontend\src\routes\reset\[token]\+page.svelte
+  (67 ln)  \frontend\src\routes\saved\+page.svelte
+  (53 ln)  \frontend\src\routes\schedule\+page.svelte
+  (50 ln)  \frontend\src\routes\settings\+page.svelte
+  (36 ln)  \frontend\src\routes\settings\accessibility\+page.svelte
+  (49 ln)  \frontend\src\routes\settings\consent\+page.svelte
+  (47 ln)  \frontend\src\routes\settings\feed\+page.svelte
+  (62 ln)  \frontend\src\routes\settings\profile\+page.svelte
+  (27 ln)  \frontend\src\routes\settings\theme\+page.svelte
+  (33 ln)  \frontend\src\routes\settings\ui\+page.svelte
+  (25 ln)  \frontend\src\routes\signup\+page.svelte
+  (66 ln)  \frontend\src\routes\tags\+page.svelte
+  (64 ln)  \frontend\src\routes\tags\insights\+page.svelte
+  (49 ln)  \frontend\src\routes\tags\preferences\+page.svelte
+  (32 ln)  \frontend\src\stores\accessibility.ts
+  (10 ln)  \frontend\src\stores\theme.ts
+  (11 ln)  \pages\api\admin\poll-jobs.ts
+  (20 ln)  \scripts\add-sdk-script.js
+  (9 ln)  \server\graphql-ws.js
+  (49 ln)  \server\migrations\20250123183615-create-user.js
+  (40 ln)  \server\migrations\20250123183619-create-profile.js
+  (43 ln)  \server\migrations\20250123183623-create-post.js
+  (37 ln)  \server\migrations\20250123183627-create-group.js
+  (34 ln)  \server\migrations\20250123183631-create-group-membership.js
+  (37 ln)  \server\migrations\20250123183639-create-moderation.js
+  (27 ln)  \server\migrations\20250125142814-add-profile-fields.js
+  (22 ln)  \server\migrations\20250125143011-add-engagement-metrics-to-posts.js
+  (16 ln)  \server\migrations\20250125143218-create-event-rsvps.js
+  (22 ln)  \server\migrations\20250125143218-create-events.js
+  (16 ln)  \server\migrations\20250125144512-create-event-rsvps.js
+  (22 ln)  \server\migrations\20250125144512-create-events.js
+  (17 ln)  \server\migrations\20250125154700-add-moderation-fields-to-users.js
+  (19 ln)  \server\migrations\20250125154700-create-reports.js
+  (17 ln)  \server\migrations\20250125154921-add-moderation-fields-to-users.js
+  (19 ln)  \server\migrations\20250125154921-create-reports.js
+  (1 ln) *** STUB  \server\migrations\20250125155456-add-fields-to-groups.js
+  (1 ln) *** STUB  \server\migrations\20250125155456-create-group-moderation-logs.js
+  (1 ln) *** STUB  \server\migrations\20250125155456-create-subgroups.js
+  (20 ln)  \server\migrations\20250125160437-add-privacy-settings-to-users.js
+  (17 ln)  \server\migrations\20250125161023-create-subgroups.js
+  (17 ln)  \server\migrations\20250125161024-add-fields-to-groups.js
+  (20 ln)  \server\migrations\20250125161024-add-privacy-settings-to-users.js
+  (15 ln)  \server\migrations\20250125161024-create-group-moderation-logs.js
+  (22 ln)  \server\migrations\20250125161252-add-ephemeral-and-reactions-to-messages.js
+  (1 ln) *** STUB  \server\migrations\20250125161535-create-feature-suggestions.js
+  (1 ln) *** STUB  \server\migrations\20250125161535-create-feedback.js
+  (1 ln) *** STUB  \server\migrations\20250125161535-create-polls.js
+  (1 ln) *** STUB  \server\migrations\20250125161535-create-poll-votes.js
+  (1 ln) *** STUB  \server\migrations\20250125161833-add-metrics-and-tags-to-posts.js
+  (1 ln) *** STUB  \server\migrations\20250125161834-add-preferences-to-users.js
+  (1 ln) *** STUB  \server\migrations\20250125161834-create-trending-tags.js
+  (17 ln)  \server\migrations\20250125162311-add-fields-to-groups.js
+  (20 ln)  \server\migrations\20250125162311-add-privacy-settings-to-users.js
+  (17 ln)  \server\migrations\20250125162311-create-feedback.js
+  (1 ln) *** STUB  \server\migrations\20250125164342-add-recurrence-and-tags-to-events.js
+  (1 ln) *** STUB  \server\migrations\20250125164342-create-event-subscriptions.js
+  (1 ln) *** STUB  \server\migrations\20250125165842-create-notifications.js
+  (1 ln) *** STUB  \server\migrations\20250125165842-create-user-notification-settings.js
+  (1 ln) *** STUB  \server\migrations\20250125170052-create-analytics-metrics.js
+  (1 ln) *** STUB  \server\migrations\20250125170052-create-content-engagements.js
+  (1 ln) *** STUB  \server\migrations\20250126100935-create-audit-logs.js
+  (1 ln) *** STUB  \server\migrations\20250126100935-create-sessions.js
+  (1 ln) *** STUB  \server\migrations\20250126101641-create-feature-suggestions.js
+  (1 ln) *** STUB  \server\migrations\20250126101641-create-feedback.js
+  (1 ln) *** STUB  \server\migrations\20250126101641-create-polls.js
+  (1 ln) *** STUB  \server\migrations\20250126101641-create-poll-votes.js
+  (1 ln) *** STUB  \server\migrations\20250126101836-create-user-preferences.js
+  (18 ln)  \server\migrations\20250126102018-create-user-preferences.js
+  (19 ln)  \server\migrations\20250126105047-create-notifications.js
+  (18 ln)  \server\migrations\20250126105047-create-reports.js
+  (21 ln)  \server\migrations\20250126105654-create-events.js
+  (17 ln)  \server\migrations\20250126105654-create-groups.js
+  (16 ln)  \server\migrations\20250126105815-create-feedback.js
+  (18 ln)  \server\migrations\20250126105815-create-polls.js
+  (15 ln)  \server\migrations\20250126105944-create-post-tags.js
+  (14 ln)  \server\migrations\20250126105944-create-tags.js
+  (17 ln)  \server\migrations\20250126110127-create-notification-preferences.js
+  (19 ln)  \server\migrations\20250126110127-create-notifications.js
+  (17 ln)  \server\migrations\20250126110225-create-user-preferences.js
+  (20 ln)  \server\migrations\20250126110543-create-platform-analytics.js
+  (16 ln)  \server\migrations\20250126112500-create-feedback.js
+  (17 ln)  \server\migrations\20250126114345-create-feedback-enhancements.js
+  (17 ln)  \server\migrations\20250126114534-create-feedback-enhancements.js
+  (16 ln)  \server\migrations\20250126115856-create-karma-points.js
+  (15 ln)  \server\migrations\20250126121012-create-user-preferences.js
+  (14 ln)  \server\migrations\20250126144234-create-relationship-types.js
+  (17 ln)  \server\migrations\20250126144235-create-event-feedback.js
+  (16 ln)  \server\migrations\20250126144235-create-karma-points.js
+  (15 ln)  \server\migrations\20250126144235-create-user-preferences.js
+  (16 ln)  \server\models\Event.js
+  (10 ln)  \server\models\EventFeedback.js
+  (12 ln)  \server\models\Feedback.js
+  (26 ln)  \server\models\group.js
+  (25 ln)  \server\models\groupmembership.js
+  (37 ln)  \server\models\index.js
+  (12 ln)  \server\models\KarmaPoints.js
+  (26 ln)  \server\models\moderation.js
+  (15 ln)  \server\models\Notification.js
+  (13 ln)  \server\models\NotificationPreference.js
+  (13 ln)  \server\models\PlatformAnalytics.js
+  (13 ln)  \server\models\Poll.js
+  (28 ln)  \server\models\post.js
+  (8 ln)  \server\models\PostTag.js
+  (27 ln)  \server\models\profile.js
+  (7 ln)  \server\models\RelationshipTypes.js
+  (14 ln)  \server\models\Report.js
+  (10 ln)  \server\models\Tag.js
+  (28 ln)  \server\models\user.js
+  (13 ln)  \server\models\UserPreference.js
+  (8 ln)  \server\models\UserPreferences.js
+  (31 ln)  \server\server.js
+  (107 ln)  \server\src\app.js
+  (1 ln) *** STUB  \server\src\controllers\index.js
+  (6 ln)  \server\src\firebase.js
+  (14 ln)  \server\src\middleware\authMiddleware.js
+  (5 ln) *** STUB  \server\src\middleware\ipLogger.js
+  (13 ln)  \server\src\middleware\passwordValidator.js
+  (8 ln)  \server\src\middleware\rateLimiter.js
+  (22 ln)  \server\src\models\comment.js
+  (27 ln)  \server\src\models\group.js
+  (26 ln)  \server\src\models\groupmember.js
+  (33 ln)  \server\src\models\index.js
+  (25 ln)  \server\src\models\notification.js
+  (28 ln)  \server\src\models\post.js
+  (22 ln)  \server\src\models\reaction.js
+  (23 ln)  \server\src\models\user.js
+  (41 ln)  \server\src\routes\analytics.js
+  (72 ln)  \server\src\routes\auth.js
+  (50 ln)  \server\src\routes\comments.js
+  (39 ln)  \server\src\routes\discovery.js
+  (30 ln)  \server\src\routes\drilldown.js
+  (32 ln)  \server\src\routes\events.js
+  (24 ln)  \server\src\routes\feedback.js
+  (6 ln)  \server\src\routes\feeds.js
+  (28 ln)  \server\src\routes\groups.js
+  (41 ln)  \server\src\routes\i18n.js
+  (11 ln)  \server\src\routes\index.js
+  (23 ln)  \server\src\routes\karma.js
+  (6 ln)  \server\src\routes\messages.js
+  (28 ln)  \server\src\routes\moderation.js
+  (38 ln)  \server\src\routes\notification-preferences.js
+  (25 ln)  \server\src\routes\notifications.js
+  (48 ln)  \server\src\routes\password.js
+  (29 ln)  \server\src\routes\polls.js
+  (89 ln)  \server\src\routes\posts.js
+  (39 ln)  \server\src\routes\preferences.js
+  (38 ln)  \server\src\routes\privacy.js
+  (50 ln)  \server\src\routes\profile.js
+  (9 ln)  \server\src\routes\protected.js
+  (30 ln)  \server\src\routes\reactions.js
+  (33 ln)  \server\src\routes\refresh.js
+  (1 ln) *** STUB  \server\src\routes\security.js
+  (28 ln)  \server\src\routes\tags.js
+  (79 ln)  \server\src\routes\user.js
+  (4 ln) *** STUB  \src\lib\components\ConsentTimeline.svelte
+  (18 ln)  \src\lib\components\PushToggle.svelte
+  (10 ln)  \src\lib\components\RichEditor.svelte
+  (1 ln) *** STUB  \src\lib\featureFlags.ts
+  (3 ln) *** STUB  \src\lib\graphql\pubsub.ts
+  (5 ln) *** STUB  \src\lib\queue.ts
+  (2 ln) *** STUB  \src\lib\sdk\index.ts
+  (174 ln)  \src\lib\sdk\openapi.ts
+  (8 ln)  \src\routes\+layout.svelte
+  (20 ln)  \src\routes\admin\jobs\polls\+page.svelte
+  (3 ln) *** STUB  \src\routes\admin\metrics\+page.svelte
+  (5 ln) *** STUB  \src\routes\admin\rate-limit\+page.svelte
+  (6 ln)  \src\routes\admin\sessions\+page.svelte
+  (14 ln)  \static\service-worker.js
+  (7 ln)  \tests\sample.test.ts
+
+--- PACKAGE.JSON ---
+{
+    "name": "bound",
+    "version": "1.0.0",
+    "private": true,
+    "scripts": {
+        "dev": "svelte-kit dev",
+        "build": "svelte-kit build",
+        "preview": "svelte-kit preview",
+        "generateSdk": "openapi-typescript openapi.json --output src/lib/sdk/openapi.ts"
+    },
+    "devDependencies": {
+        "@testing-library/jest-dom": "^6.6.3",
+        "@testing-library/svelte": "^5.2.7",
+        "@types/jest": "^29.5.14",
+        "artillery": "^2.0.22",
+        "commander": "^9.5.0",
+        "cypress": "^14.3.1",
+        "jest": "^29.7.0",
+        "node-fetch": "^2.7.0",
+        "openapi-typescript": "^7.6.1",
+        "ts-jest": "^29.3.2",
+        "ts-node": "^10.9.2"
+    }
+}
+

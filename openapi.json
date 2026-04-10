@@ -1,0 +1,61 @@
+﻿{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Bound API",
+    "version": "1.0.0"
+  },
+  "servers": [
+    { "url": "http://localhost:3000" }
+  ],
+  "paths": {
+    "/api/posts/journal": {
+      "post": {
+        "summary": "Create a journal post",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "text": { "type": "string" },
+                  "tags": {
+                    "type": "array",
+                    "items": { "type": "string" }
+                  },
+                  "privacy": { "type": "string" },
+                  "category": { "type": "string" }
+                },
+                "required": ["text","privacy","category"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Post created" }
+        }
+      }
+    },
+    "/api/posts/media": {
+      "post": {
+        "summary": "Upload a media post",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "type":"object" } } } },
+        "responses": { "200": { "description": "Media post created" } }
+      }
+    },
+    "/api/posts/status": {
+      "post": {
+        "summary": "Create a status update",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "type":"object" } } } },
+        "responses": { "200": { "description": "Status post created" } }
+      }
+    },
+    "/api/posts/poll": {
+      "post": {
+        "summary": "Create a poll post",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "type":"object" } } } },
+        "responses": { "200": { "description": "Poll created" } }
+      }
+    }
+  }
+}

@@ -1,8 +1,26 @@
 {
-  "dependencies": {
-    "pg": "^8.13.1",
-    "pg-hstore": "^2.3.4",
-    "sequelize": "^6.37.5",
-    "sequelize-cli": "^6.6.2"
-  }
+    "name": "bound-server",
+    "version": "1.0.0",
+    "private": true,
+    "scripts": {
+        "dev": "nodemon server.js",
+        "start": "node server.js"
+    },
+    "dependencies": {
+        "bcrypt": "^5.1.1",
+        "cors": "^2.8.5",
+        "dotenv": "^16.4.5",
+        "express": "^4.19.2",
+        "express-rate-limit": "^7.3.1",
+        "jsonwebtoken": "^9.0.2",
+        "pg": "^8.13.1",
+        "pg-hstore": "^2.3.4",
+        "sequelize": "^6.37.5",
+        "sequelize-cli": "^6.6.2",
+        "socket.io": "^4.7.5",
+        "web-push": "^3.6.7"
+    },
+    "devDependencies": {
+        "nodemon": "^3.1.0"
+    }
 }
