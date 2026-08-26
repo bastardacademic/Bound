@@ -19,7 +19,9 @@ module.exports = {
         type: Sequelize.TEXT
       },
       status: {
-        type: Sequelize.ENUM
+        type: Sequelize.ENUM('pending', 'resolved', 'dismissed'),
+        allowNull: false,
+        defaultValue: 'pending'
       },
       createdAt: {
         allowNull: false,

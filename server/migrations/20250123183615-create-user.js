@@ -19,7 +19,9 @@ module.exports = {
         type: Sequelize.STRING
       },
       role: {
-        type: Sequelize.ENUM
+        type: Sequelize.ENUM('user', 'moderator', 'admin'),
+        allowNull: false,
+        defaultValue: 'user'
       },
       profile_picture: {
         type: Sequelize.STRING
@@ -31,7 +33,9 @@ module.exports = {
         type: Sequelize.STRING
       },
       visibility: {
-        type: Sequelize.ENUM
+        type: Sequelize.ENUM('public', 'members_only', 'private'),
+        allowNull: false,
+        defaultValue: 'public'
       },
       createdAt: {
         allowNull: false,

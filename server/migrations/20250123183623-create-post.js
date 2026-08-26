@@ -22,7 +22,9 @@ module.exports = {
         type: Sequelize.JSONB
       },
       visibility: {
-        type: Sequelize.ENUM
+        type: Sequelize.ENUM('public', 'members_only', 'private'),
+        allowNull: false,
+        defaultValue: 'public'
       },
       likes: {
         type: Sequelize.INTEGER

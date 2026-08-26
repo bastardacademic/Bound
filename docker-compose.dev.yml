@@ -10,20 +10,22 @@ services:
       - "5432:5432"
 
   backend:
-    build: ./backend
-    command: npm run start:dev
+    build: ./server
+    command: npm run dev
     volumes:
-      - ./backend:/app
+      - ./server:/app
     ports:
       - "3000:3000"
     depends_on:
       - db
+    env_file:
+      - ./server/.env
     environment:
       DATABASE_URL: postgres://bounduser:boundpass@db:5432/bounddb
 
   frontend:
     build: ./frontend
-    command: npm run dev
+    command: npm run dev -- --host 0.0.0.0
     volumes:
       - ./frontend:/app
     ports:

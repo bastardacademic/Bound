@@ -16,7 +16,9 @@ module.exports = {
         type: Sequelize.TEXT
       },
       privacy: {
-        type: Sequelize.ENUM
+        type: Sequelize.ENUM('public', 'private', 'secret'),
+        allowNull: false,
+        defaultValue: 'public'
       },
       owner_id: {
         type: Sequelize.INTEGER
