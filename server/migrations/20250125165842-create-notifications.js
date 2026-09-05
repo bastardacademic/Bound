@@ -1,1 +1,0 @@
-﻿// Migration for Notifications table
