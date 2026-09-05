@@ -12,11 +12,13 @@ module.exports = (sequelize, DataTypes) => {
     {
       user_id: { type: DataTypes.INTEGER, allowNull: false },
       type: {
-        type: DataTypes.ENUM('comment', 'reaction', 'group'),
+        type: DataTypes.ENUM('like', 'comment', 'mention', 'event', 'group'),
         allowNull: false,
       },
-      content: { type: DataTypes.TEXT, allowNull: false },
-      read: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false },
+      content_id: { type: DataTypes.INTEGER, allowNull: false },
+      content_type: { type: DataTypes.STRING, allowNull: false },
+      message: { type: DataTypes.STRING, allowNull: false },
+      is_read: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false },
     },
     {
       sequelize,

@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       media_url: { type: DataTypes.STRING, allowNull: true },
       tags: { type: DataTypes.JSONB, allowNull: true },
       visibility: {
-        type: DataTypes.ENUM('public', 'friends', 'private'),
+        type: DataTypes.ENUM('public', 'members_only', 'private'),
         allowNull: false,
         defaultValue: 'public',
       },

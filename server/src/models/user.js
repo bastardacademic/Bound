@@ -5,6 +5,12 @@ module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
       User.hasMany(models.Notification, { foreignKey: 'user_id' });
+      User.hasOne(models.Profile, { foreignKey: 'user_id' });
+      User.hasMany(models.Post, { foreignKey: 'author_id' });
+      User.hasMany(models.Comment, { foreignKey: 'user_id' });
+      User.hasMany(models.Reaction, { foreignKey: 'user_id' });
+      User.hasMany(models.GroupMember, { foreignKey: 'user_id' });
+      User.belongsToMany(models.Group, { through: models.GroupMember, foreignKey: 'user_id' });
     }
   }
 

@@ -7,6 +7,7 @@ module.exports = {
       language: { type: Sequelize.STRING, defaultValue: "en" },
       high_contrast_mode: { type: Sequelize.BOOLEAN, defaultValue: false },
       font_size: { type: Sequelize.ENUM("small", "medium", "large"), defaultValue: "medium" },
+      color_theme: { type: Sequelize.STRING, defaultValue: "default" },
       createdAt: { type: Sequelize.DATE, allowNull: false },
       updatedAt: { type: Sequelize.DATE, allowNull: false },
     });

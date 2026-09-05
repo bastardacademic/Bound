@@ -10,10 +10,8 @@ module.exports = {
       type: Sequelize.JSONB,
       allowNull: true,
     });
-    await queryInterface.addColumn('Users', 'privacy_settings', {
-      type: Sequelize.JSONB,
-      allowNull: true,
-    });
+    // privacy_settings is added by 20250125160437-add-privacy-settings-to-users.js instead,
+    // which gives it a sensible per-field default.
     await queryInterface.addColumn('Users', 'relationship_preferences', {
       type: Sequelize.JSONB,
       allowNull: true,
@@ -23,7 +21,6 @@ module.exports = {
   down: async (queryInterface) => {
     await queryInterface.removeColumn('Users', 'about_me');
     await queryInterface.removeColumn('Users', 'kinks_and_fetishes');
-    await queryInterface.removeColumn('Users', 'privacy_settings');
     await queryInterface.removeColumn('Users', 'relationship_preferences');
   },
 };
