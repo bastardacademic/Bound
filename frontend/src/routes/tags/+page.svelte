@@ -41,10 +41,10 @@
 </ul>
 
 <h3>? Followed Tags:</h3>
-<p>{#if followedTags.length === 0}<em>None</em>{:else}{followedTags.map(t => "#" + t.name).join(", ")}</p>
+<p>{#if followedTags.length === 0}<em>None</em>{:else}{followedTags.map(t => "#" + t.name).join(", ")}{/if}</p>
 
 <h3>?? Muted Tags:</h3>
-<p>{#if mutedTags.length === 0}<em>None</em>{:else}{mutedTags.map(t => "#" + t.name).join(", ")}</p>
+<p>{#if mutedTags.length === 0}<em>None</em>{:else}{mutedTags.map(t => "#" + t.name).join(", ")}{/if}</p>
 
 <style>
   .note {

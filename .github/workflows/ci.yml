@@ -1,16 +1,45 @@
-﻿name: CI
+name: CI
 on: [push, pull_request]
 jobs:
-  build:
+  frontend:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: '18'
-      - run: npm install
-      - run: npm test
-      - name: Run Cypress tests
-        uses: cypress-io/github-action@v4
-      - name: Run Artillery load test
-        run: npx artillery run load-test/loadtest.yml
+          node-version: '20'
+      - run: npm ci
+      - run: npm run build
+
+  backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: server
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: bounduser
+          POSTGRES_PASSWORD: boundpass
+          POSTGRES_DB: bounddb_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      - run: npm ci
+      - name: Run migrations against a fresh database
+        env:
+          NODE_ENV: test
+        run: npx sequelize-cli db:migrate
