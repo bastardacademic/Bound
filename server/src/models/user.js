@@ -30,6 +30,9 @@ module.exports = (sequelize, DataTypes) => {
       relationship_preferences: { type: DataTypes.JSONB, allowNull: true },
       totp_secret: { type: DataTypes.STRING, allowNull: true },
       totp_enabled: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false },
+      date_of_birth: { type: DataTypes.DATEONLY, allowNull: true },
+      warnings: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 0 },
+      banned_until: { type: DataTypes.DATE, allowNull: true },
     },
     {
       sequelize,

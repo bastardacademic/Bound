@@ -5,6 +5,8 @@ module.exports = (sequelize, DataTypes) => {
     user_id: { type: DataTypes.INTEGER, allowNull: false },
     rating: { type: DataTypes.INTEGER, allowNull: false },
     comments: { type: DataTypes.TEXT, allowNull: true },
+  }, {
+    tableName: "EventFeedback",
   });
   EventFeedback.associate = (models) => {
     EventFeedback.belongsTo(models.Event, { foreignKey: "event_id" });

@@ -2,7 +2,9 @@
 const bcrypt = require("bcrypt");
 const router = express.Router();
 const authMiddleware = require("../middleware/authMiddleware");
-const { User, Post, Comment } = require("../models");
+const models = require("../models");
+const { User, Post, Comment } = models;
+const { anonymizeAndDeleteUser } = require("../accountDeletion");
 
 router.use(authMiddleware);
 
@@ -45,7 +47,7 @@ router.delete("/delete", async (req, res) => {
       return res.status(401).json({ message: "Incorrect password" });
     }
 
-    await user.destroy();
+    await anonymizeAndDeleteUser(user, models);
     res.json({ message: "User data deleted successfully." });
   } catch (err) {
     res.status(500).json({ message: "Server error" });

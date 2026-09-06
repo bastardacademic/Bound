@@ -28,6 +28,7 @@ app.use('/api/feeds',         require('./routes/feeds'));
 app.use('/api/events',        require('./routes/events'));
 app.use('/api/moderation',    require('./routes/moderation'));
 app.use('/api/consent',       require('./routes/consent'));
+app.use('/api/blocks',        require('./routes/blocks'));
 app.use('/api/privacy',       require('./routes/privacy'));
 app.use('/api/messages',      require('./routes/messages'));
 app.use('/api/feedback',      require('./routes/feedback'));

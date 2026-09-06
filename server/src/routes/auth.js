@@ -12,6 +12,22 @@ function toSafeUser(user) {
   return safe;
 }
 
+const MIN_AGE = 18;
+
+function isAtLeastMinAge(dateString) {
+  const dob = new Date(dateString);
+  if (Number.isNaN(dob.getTime())) return false;
+
+  const today = new Date();
+  let age = today.getFullYear() - dob.getFullYear();
+  const hasHadBirthdayThisYear =
+    today.getMonth() > dob.getMonth() ||
+    (today.getMonth() === dob.getMonth() && today.getDate() >= dob.getDate());
+  if (!hasHadBirthdayThisYear) age -= 1;
+
+  return age >= MIN_AGE;
+}
+
 // @route POST /api/auth/register
 // @desc Register a new user
 router.post(
@@ -24,6 +40,7 @@ router.post(
       if (!result.valid) throw new Error(result.message);
       return true;
     }),
+    body('date_of_birth').isISO8601().withMessage('A valid date of birth is required'),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -31,7 +48,11 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { username, email, password } = req.body;
+    const { username, email, password, date_of_birth } = req.body;
+
+    if (!isAtLeastMinAge(date_of_birth)) {
+      return res.status(403).json({ message: `You must be at least ${MIN_AGE} to register.` });
+    }
 
     try {
       const existingUser = await User.findOne({ where: { email } });
@@ -42,7 +63,7 @@ router.post(
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, salt);
 
-      const user = await User.create({ username, email, password: hashedPassword });
+      const user = await User.create({ username, email, password: hashedPassword, date_of_birth });
       res.status(201).json({ message: 'User registered successfully', user: toSafeUser(user) });
     } catch (err) {
       console.error(err.message);
@@ -77,6 +98,12 @@ router.post(
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) {
         return res.status(400).json({ message: 'Invalid email or password' });
+      }
+
+      if (user.banned_until && new Date(user.banned_until) > new Date()) {
+        return res.status(403).json({
+          message: `Account suspended until ${new Date(user.banned_until).toISOString()}`,
+        });
       }
 
       if (user.totp_enabled) {

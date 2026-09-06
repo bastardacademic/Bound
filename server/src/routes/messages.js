@@ -1,7 +1,7 @@
 const express = require("express");
 const { Op } = require("sequelize");
 const authMiddleware = require("../middleware/authMiddleware");
-const { Message, User } = require("../models");
+const { Message, User, Block } = require("../models");
 const { getIO } = require("../socket");
 const { sendPushToUser } = require("../push");
 const router = express.Router();
@@ -118,6 +118,18 @@ router.post("/:userId", async (req, res) => {
     const partner = await User.findByPk(partnerId);
     if (!partner) {
       return res.status(404).json({ message: "Recipient not found" });
+    }
+
+    const blocked = await Block.findOne({
+      where: {
+        [Op.or]: [
+          { blocker_id: myId, blocked_id: partnerId },
+          { blocker_id: partnerId, blocked_id: myId },
+        ],
+      },
+    });
+    if (blocked) {
+      return res.status(403).json({ message: "You can't message this user" });
     }
 
     const message = await Message.create({
