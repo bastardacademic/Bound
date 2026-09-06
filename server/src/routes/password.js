@@ -1,6 +1,7 @@
 const express = require('express');
 const crypto = require('crypto');
 const bcrypt = require('bcrypt');
+const passwordValidator = require('../middleware/passwordValidator');
 const { User } = require('../models');
 const router = express.Router();
 
@@ -33,6 +34,11 @@ router.post('/request-password-reset', async (req, res) => {
 // @desc Reset the password using the token
 router.post('/reset-password', async (req, res) => {
   const { token, newPassword } = req.body;
+
+  const strength = passwordValidator(newPassword);
+  if (!strength.valid) {
+    return res.status(400).json({ message: strength.message });
+  }
 
   try {
     const user = await User.findOne({

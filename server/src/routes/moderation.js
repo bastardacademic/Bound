@@ -1,6 +1,9 @@
 ﻿const express = require("express");
 const router = express.Router();
+const authMiddleware = require("../middleware/authMiddleware");
 const { Report } = require("../models");
+
+router.use(authMiddleware);
 
 // Submit a report
 router.post("/", async (req, res) => {
@@ -19,8 +22,12 @@ router.post("/", async (req, res) => {
   }
 });
 
-// Get all reports for moderation
+// Get all reports for moderation — moderators/admins only, not every logged-in user
 router.get("/", async (req, res) => {
+  if (req.user.role !== "moderator" && req.user.role !== "admin") {
+    return res.status(403).json({ message: "Forbidden" });
+  }
+
   try {
     const reports = await Report.findAll();
     res.json(reports);

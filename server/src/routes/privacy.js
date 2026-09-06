@@ -1,6 +1,10 @@
 ﻿const express = require("express");
+const bcrypt = require("bcrypt");
 const router = express.Router();
+const authMiddleware = require("../middleware/authMiddleware");
 const { User, Post, Comment } = require("../models");
+
+router.use(authMiddleware);
 
 // Export user data
 router.get("/export", async (req, res) => {
@@ -26,12 +30,19 @@ router.get("/export", async (req, res) => {
   }
 });
 
-// Delete user data (Right to be forgotten)
+// Delete user data (Right to be forgotten) — requires re-entering the password,
+// since a stolen/reused session token shouldn't be enough to destroy an account.
 router.delete("/delete", async (req, res) => {
+  const { password } = req.body;
+
   try {
     const user = await User.findByPk(req.user.id);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
+    }
+
+    if (!password || !(await bcrypt.compare(password, user.password))) {
+      return res.status(401).json({ message: "Incorrect password" });
     }
 
     await user.destroy();

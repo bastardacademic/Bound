@@ -1,30 +1,52 @@
 <script lang="ts">
-  import { getConsentLedger, revokeConsent, ConsentEntry } from "$lib/utils/consent.ts";
+  import { onMount } from "svelte";
+  import { session } from "$stores/session";
+  import { get } from "svelte/store";
 
-  let userId = "user123";
-  let ledger: ConsentEntry[] = getConsentLedger(userId);
+  let ledger = [];
+  let error = "";
 
-  function revoke(id: string) {
-    if (confirm("Are you sure you want to revoke this consent?")) {
-      if (revokeConsent(userId, id)) {
-        ledger = [...ledger]; // refresh UI
-      }
+  async function loadLedger() {
+    const { token } = get(session);
+    const res = await fetch("/api/consent", {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if (res.ok) ledger = await res.json();
+  }
+
+  async function revoke(id: number) {
+    if (!confirm("Are you sure you want to revoke this consent?")) return;
+
+    const { token } = get(session);
+    const res = await fetch(`/api/consent/${id}/revoke`, {
+      method: "PATCH",
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if (res.ok) {
+      const updated = await res.json();
+      ledger = ledger.map((item) => (item.id === updated.id ? updated : item));
+    } else {
+      error = "Could not revoke consent.";
     }
   }
+
+  onMount(loadLedger);
 </script>
 
-<h2>?? Consent Ledger</h2>
+<h2>Consent Ledger</h2>
+
+{#if error}<p style="color: red;">{error}</p>{/if}
 
 {#if ledger.length === 0}
   <p>No consent approvals found.</p>
 {:else}
   <ul>
-    {#each ledger as item}
+    {#each ledger as item (item.id)}
       <li>
         <strong>{item.label}</strong><br />
-        <small>Approved: {new Date(item.approvedAt).toLocaleString()}</small>
+        <small>Approved: {new Date(item.createdAt).toLocaleString()}</small>
         {#if item.revoked}
-          <span class="revoked">– Revoked</span>
+          <span class="revoked">Revoked</span>
         {:else}
           <button on:click={() => revoke(item.id)}>Revoke</button>
         {/if}

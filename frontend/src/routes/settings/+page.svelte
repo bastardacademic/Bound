@@ -10,6 +10,61 @@
   let message = '';
   let error = '';
 
+  let totpEnabled = get(session).user?.totp_enabled || false;
+  let totpSetup = null; // { secret, otpauth_url } while a setup is pending confirmation
+  let totpCode = '';
+  let disablePassword = '';
+  let totpError = '';
+
+  async function authedFetch(url, opts = {}) {
+    const { token } = get(session);
+    return fetch(url, {
+      ...opts,
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`, ...(opts.headers || {}) }
+    });
+  }
+
+  async function startTotpSetup() {
+    totpError = '';
+    const res = await authedFetch('/api/2fa/setup', { method: 'POST' });
+    if (res.ok) {
+      totpSetup = await res.json();
+    } else {
+      totpError = 'Could not start 2FA setup.';
+    }
+  }
+
+  async function confirmTotpSetup() {
+    totpError = '';
+    const res = await authedFetch('/api/2fa/verify', {
+      method: 'POST',
+      body: JSON.stringify({ token: totpCode })
+    });
+    if (res.ok) {
+      totpEnabled = true;
+      totpSetup = null;
+      totpCode = '';
+    } else {
+      const data = await res.json();
+      totpError = data.message || 'Invalid code.';
+    }
+  }
+
+  async function disableTotp() {
+    totpError = '';
+    const res = await authedFetch('/api/2fa/disable', {
+      method: 'POST',
+      body: JSON.stringify({ password: disablePassword })
+    });
+    if (res.ok) {
+      totpEnabled = false;
+      disablePassword = '';
+    } else {
+      const data = await res.json();
+      totpError = data.message || 'Could not disable 2FA.';
+    }
+  }
+
   onMount(async () => {
     const { token } = get(session);
     if (!token) goto('/login');
@@ -60,3 +115,21 @@
 
 <h3>Notifications</h3>
 <PushToggle />
+
+<h3>Two-Factor Authentication</h3>
+{#if totpError}<p style="color: red;">{totpError}</p>{/if}
+
+{#if totpEnabled}
+  <p>Two-factor authentication is <strong>enabled</strong>.</p>
+  <input type="password" placeholder="Confirm password to disable" bind:value={disablePassword} />
+  <button on:click={disableTotp}>Disable 2FA</button>
+{:else if totpSetup}
+  <p>Scan this into your authenticator app, or enter it manually:</p>
+  <code>{totpSetup.secret}</code>
+  <p>Then enter the 6-digit code it generates to confirm:</p>
+  <input type="text" placeholder="6-digit code" bind:value={totpCode} inputmode="numeric" />
+  <button on:click={confirmTotpSetup}>Confirm</button>
+{:else}
+  <p>Two-factor authentication is not enabled.</p>
+  <button on:click={startTotpSetup}>Enable 2FA</button>
+{/if}

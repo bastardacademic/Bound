@@ -19,6 +19,7 @@
         "sequelize": "^6.37.5",
         "sequelize-cli": "^6.6.2",
         "socket.io": "^4.7.5",
+        "speakeasy": "^2.0.0",
         "web-push": "^3.6.7"
     },
     "devDependencies": {

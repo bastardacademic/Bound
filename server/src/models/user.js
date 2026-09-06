@@ -28,6 +28,8 @@ module.exports = (sequelize, DataTypes) => {
       kinks_and_fetishes: { type: DataTypes.JSONB, allowNull: true },
       privacy_settings: { type: DataTypes.JSONB, allowNull: true },
       relationship_preferences: { type: DataTypes.JSONB, allowNull: true },
+      totp_secret: { type: DataTypes.STRING, allowNull: true },
+      totp_enabled: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false },
     },
     {
       sequelize,

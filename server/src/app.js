@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const rateLimiter = require('./middleware/rateLimiter');
 
 const app = express();
 
@@ -14,7 +15,8 @@ app.use(express.urlencoded({ extended: true }));
 
 // --- Routes ---
 app.use('/api/user',          require('./routes/user'));
-app.use('/api/auth',          require('./routes/auth'));
+app.use('/api/auth',          rateLimiter, require('./routes/auth'));
+app.use('/api/2fa',           rateLimiter, require('./routes/twoFactor'));
 app.use('/api/posts',         require('./routes/posts'));
 app.use('/api/posts',         require('./routes/reactions'));
 app.use('/api/posts',         require('./routes/comments'));
@@ -25,6 +27,7 @@ app.use('/api/profile',       require('./routes/profile'));
 app.use('/api/feeds',         require('./routes/feeds'));
 app.use('/api/events',        require('./routes/events'));
 app.use('/api/moderation',    require('./routes/moderation'));
+app.use('/api/consent',       require('./routes/consent'));
 app.use('/api/privacy',       require('./routes/privacy'));
 app.use('/api/messages',      require('./routes/messages'));
 app.use('/api/feedback',      require('./routes/feedback'));
@@ -32,7 +35,7 @@ app.use('/api/analytics',     require('./routes/analytics'));
 app.use('/api/polls',         require('./routes/polls'));
 app.use('/api/tags',          require('./routes/tags'));
 app.use('/api/preferences',   require('./routes/preferences'));
-app.use('/api/password',      require('./routes/password'));
+app.use('/api/password',      rateLimiter, require('./routes/password'));
 app.use('/api/discovery',     require('./routes/discovery'));
 app.use('/api/karma',         require('./routes/karma'));
 app.use('/api/refresh',       require('./routes/refresh'));
