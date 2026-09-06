@@ -3,6 +3,7 @@ const http = require('http');
 const { Server } = require('socket.io');
 const jwt = require('jsonwebtoken');
 const app = require('./src/app');
+const { setIO } = require('./src/socket');
 
 const PORT = process.env.PORT || 3000;
 
@@ -45,8 +46,8 @@ io.on('connection', (socket) => {
     });
 });
 
-// Export io so route handlers can emit events (e.g. new notification)
-module.exports.io = io;
+// Make io available to route handlers via src/socket.js (e.g. to push new messages/notifications)
+setIO(io);
 
 // --- Start server ---
 server.listen(PORT, () => {

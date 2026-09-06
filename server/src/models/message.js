@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       sender_id: { type: DataTypes.INTEGER, allowNull: false },
       receiver_id: { type: DataTypes.INTEGER, allowNull: false },
       content: { type: DataTypes.TEXT, allowNull: false },
+      is_read: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false },
       is_ephemeral: { type: DataTypes.BOOLEAN, defaultValue: false },
       expires_at: { type: DataTypes.DATE, allowNull: true },
       reaction: { type: DataTypes.STRING, allowNull: true },

@@ -1,73 +1,52 @@
 <script>
   import { onMount } from 'svelte';
+  import { goto } from '$app/navigation';
+  import { session } from '$stores/session';
+  import { get } from 'svelte/store';
+
   let conversations = [];
-  let selected = null;
-  let message = '';
-  let thread = [];
 
   async function loadConversations() {
-    const res = await fetch('/api/messages');
-    conversations = await res.json();
-  }
-
-  async function selectConversation(conv) {
-    selected = conv;
-    await loadThread();
-  }
-
-  async function loadThread() {
-    const res = await fetch('/api/messages/' + selected.id);
-    thread = await res.json();
-  }
-
-  async function sendMessage() {
-    if (!message.trim()) return;
-    const res = await fetch('/api/messages/' + selected.id, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ content: message })
+    const { token } = get(session);
+    const res = await fetch('/api/messages', {
+      headers: { Authorization: `Bearer ${token}` }
     });
-    const newMsg = await res.json();
-    thread.push(newMsg);
-    message = '';
-    await loadConversations(); // refresh unread counts
+    if (res.ok) conversations = await res.json();
   }
 
   let poller;
   onMount(() => {
     loadConversations();
-    poller = setInterval(() => {
-      loadConversations();
-      if (selected) loadThread();
-    }, 5000);
+    poller = setInterval(loadConversations, 5000);
     return () => clearInterval(poller);
   });
 </script>
 
 <h2>Messages</h2>
-<div style='display: flex; gap: 2rem;'>
-  <aside>
-    <ul>
-      {#each conversations as conv}
-        <li>
-          <button on:click={() => selectConversation(conv)}>
-            {conv.name} {#if conv.unread > 0}<strong>({conv.unread})</strong>{/if}
-          </button>
-        </li>
-      {/each}
-    </ul>
-  </aside>
+<ul>
+  {#each conversations as conv (conv.id)}
+    <li>
+      <button on:click={() => goto(`/messages/${conv.id}`)}>
+        {conv.name} {#if conv.unread > 0}<strong>({conv.unread})</strong>{/if}
+      </button>
+      {#if conv.lastMessage}<p class="preview">{conv.lastMessage}</p>{/if}
+    </li>
+  {/each}
+  {#if conversations.length === 0}<p>No conversations yet.</p>{/if}
+</ul>
 
-  {#if selected}
-  <section>
-    <h3>Chat with {selected.name}</h3>
-    <div class='thread'>
-      {#each thread as msg}
-        <p><strong>{msg.senderId === selected.id ? selected.name : 'Me'}:</strong> {msg.content}</p>
-      {/each}
-    </div>
-    <input bind:value={message} placeholder='Type message...' />
-    <button on:click={sendMessage}>Send</button>
-  </section>
-  {/if}
-</div>
+<style>
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #333;
+  }
+  .preview {
+    margin: 0.25rem 0 0;
+    font-size: 0.85rem;
+    color: #999;
+  }
+</style>
