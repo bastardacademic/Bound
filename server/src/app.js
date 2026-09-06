@@ -39,9 +39,6 @@ app.use('/api/refresh',       require('./routes/refresh'));
 app.use('/api/i18n',          require('./routes/i18n'));
 app.use('/api',               require('./routes/protected'));
 
-// --- Security route (stub — implement before enabling) ---
-// app.use('/api/security', require('./routes/security'));
-
 // --- Health check ---
 app.get('/health', (req, res) => res.json({ status: 'ok' }));
 

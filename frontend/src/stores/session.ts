@@ -20,6 +20,10 @@ function loadInitial(): Session {
 
 export const session = writable<Session>(loadInitial());
 
+export function logout() {
+  session.set(empty);
+}
+
 if (typeof window !== "undefined") {
   session.subscribe((val) => {
     if (val.token) {
