@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Group.belongsTo(models.User, { foreignKey: 'created_by' });
       Group.hasMany(models.GroupMember, { foreignKey: 'group_id' });
+      Group.hasMany(models.Post, { foreignKey: 'group_id' });
     }
   }
   Group.init(

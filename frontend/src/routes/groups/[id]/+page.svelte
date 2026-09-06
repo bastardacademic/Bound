@@ -25,19 +25,20 @@
 
 {#if group}
   <h2>{group.name}</h2>
-  <p>ID: {group.id}</p>
+  {#if group.description}<p class="description">{group.description}</p>{/if}
 
   <h3>Recent Posts</h3>
   <ul>
     {#each posts as post}
       <li>
-        <strong>{post.title}</strong><br />
-        <span>{post.preview}</span>
+        <strong>{post.User?.username || "Unknown"}</strong><br />
+        <span>{post.content}</span>
       </li>
     {/each}
+    {#if posts.length === 0}<p>No posts in this group yet.</p>{/if}
   </ul>
 {:else}
-  <p>Loading group info…</p>
+  <p>Loading group infoâ€¦</p>
 {/if}
 
 <style>

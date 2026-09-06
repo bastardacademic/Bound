@@ -8,11 +8,12 @@ const router = express.Router();
 // @desc Create a post
 // @access Private
 router.post('/', authMiddleware, async (req, res) => {
-  const { content, media_url, tags, visibility } = req.body;
+  const { content, media_url, tags, visibility, group_id } = req.body;
 
   try {
     const post = await Post.create({
       author_id: req.user.id,
+      group_id: group_id || null,
       content,
       media_url,
       tags,

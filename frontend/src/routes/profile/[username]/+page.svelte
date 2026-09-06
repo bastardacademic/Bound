@@ -1,13 +1,11 @@
 <script lang="ts">
   import { page } from "$app/stores";
-  import { pinnedItems } from "$lib/stores/pins";
   import { session } from "$stores/session";
   import { get } from "svelte/store";
 
   let username = "";
   let profile = null;
-  let pinnedJournal = null;
-  let pinnedMedia = null;
+  let notFound = false;
 
   $: username = $page.params.username;
 
@@ -18,8 +16,8 @@
     });
     if (res.ok) {
       profile = await res.json();
-      pinnedJournal = profile.pinned?.journal || null;
-      pinnedMedia = profile.pinned?.media || null;
+    } else if (res.status === 404) {
+      notFound = true;
     }
   }
 
@@ -27,38 +25,39 @@
 </script>
 
 {#if profile}
-  <h2>{profile.displayName}</h2>
-  <p>@{profile.username} • {profile.pronouns} • <strong>{profile.flair}</strong></p>
+  <h2>@{profile.username}</h2>
 
-  {#if pinnedJournal}
+  {#if profile.bio}<p class="bio">{profile.bio}</p>{/if}
+
+  {#if profile.about_me}
     <section>
-      <h3>?? Pinned Journal</h3>
-      <div class="pinned-card">
-        <strong>{pinnedJournal.title}</strong><br />
-        <p>{pinnedJournal.excerpt}</p>
-      </div>
+      <h3>About</h3>
+      <p>{profile.about_me}</p>
     </section>
   {/if}
 
-  {#if pinnedMedia}
+  {#if profile.kinks_and_fetishes}
     <section>
-      <h3>?? Pinned Media</h3>
-      <div class="pinned-card">
-        <strong>{pinnedMedia.title}</strong><br />
-        <p>[Media Preview]</p>
-      </div>
+      <h3>Kinks &amp; Fetishes</h3>
+      <p>{profile.kinks_and_fetishes}</p>
     </section>
   {/if}
+
+  {#if profile.relationship_preferences}
+    <section>
+      <h3>Relationship Preferences</h3>
+      <p>{profile.relationship_preferences}</p>
+    </section>
+  {/if}
+{:else if notFound}
+  <p>User not found.</p>
 {:else}
-  <p>Loading profile…</p>
+  <p>Loading profileâ€¦</p>
 {/if}
 
 <style>
-  .pinned-card {
-    border: 1px solid #444;
-    padding: 1rem;
-    border-radius: 6px;
-    margin: 1rem 0;
-    background: #111;
+  .bio {
+    color: #aaa;
+    font-style: italic;
   }
 </style>
