@@ -3,6 +3,7 @@ const { Op } = require("sequelize");
 const authMiddleware = require("../middleware/authMiddleware");
 const { Message, User } = require("../models");
 const { getIO } = require("../socket");
+const { sendPushToUser } = require("../push");
 const router = express.Router();
 
 router.use(authMiddleware);
@@ -127,6 +128,11 @@ router.post("/:userId", async (req, res) => {
 
     const dto = toDTO(message);
     getIO()?.to(`user:${partnerId}`).emit("message:new", dto);
+    sendPushToUser(partnerId, {
+      title: req.user.username || "New message",
+      body: message.content,
+      url: `/messages/${myId}`,
+    }).catch((err) => console.error("Push send failed:", err.message));
 
     res.status(201).json(dto);
   } catch (err) {

@@ -3,6 +3,7 @@
   import { session } from '$stores/session';
   import { goto } from '$app/navigation';
   import { get } from 'svelte/store';
+  import PushToggle from '$lib/components/PushToggle.svelte';
 
   let profile = { email: '', bio: '', pronouns: '' };
   let theme = 'light';
@@ -56,3 +57,6 @@
 <h3>Theme</h3>
 <label><input type="radio" name="theme" value="light" checked={theme === 'light'} on:change={() => updateTheme('light')} /> Light</label>
 <label><input type="radio" name="theme" value="dark" checked={theme === 'dark'} on:change={() => updateTheme('dark')} /> Dark</label>
+
+<h3>Notifications</h3>
+<PushToggle />

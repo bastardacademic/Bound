@@ -1,6 +1,13 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import ThemeToggle from "$lib/components/ThemeToggle.svelte";
   import { accessibility } from "$stores/accessibility";
+
+  onMount(() => {
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/service-worker.js");
+    }
+  });
 </script>
 
 <header>
