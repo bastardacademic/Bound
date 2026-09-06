@@ -1,6 +1,7 @@
 <script>
   import { session } from '$stores/session';
   import { goto } from '$app/navigation';
+  import { page } from '$app/stores';
   let email = '';
   let password = '';
   let error = '';
@@ -16,7 +17,8 @@
     if (res.ok) {
       const data = await res.json();
       session.set({ token: data.token, user: data.user });
-      goto('/dashboard');
+      const redirectTo = $page.url.searchParams.get('redirectTo');
+      goto(redirectTo || '/dashboard');
     } else {
       error = 'Invalid email or password';
     }
